@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.RoverRuckus;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -7,6 +9,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 public class RoverHardware{
 
     HardwareMap HwMap;
+
+
 
     //Drive Motors
     DcMotor left1;
@@ -17,6 +21,11 @@ public class RoverHardware{
     //Hanging Mechanism
     DcMotor hang;
 
+    BNO055IMU imu;
+
+    public RoverHardware() {System.out.println("Created new RRHardwarePresets Object!");}
+
+
     public void init(HardwareMap hwm){
 
         HwMap = hwm;
@@ -25,9 +34,10 @@ public class RoverHardware{
         left2 = HwMap.dcMotor.get("left2");
         right1 = HwMap.dcMotor.get("right1");
         right2 = HwMap.dcMotor.get("right2");
-
         //Hanging Motor
         hang = HwMap.dcMotor.get("hang");
+
+        imu = HwMap.get(BNO055IMU.class, "imu");
 
         //Set DcMotor Directions and Behaviors
         left1.setDirection(DcMotorSimple.Direction.REVERSE);

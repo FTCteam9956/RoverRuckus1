@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.RelicRecovery;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -10,8 +11,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import java.util.Locale;
 
 @TeleOp(name = "State Teleop", group = "Teleop")
-
-//@Disabled
+@Disabled
 
 //-----Teleop Controls ------
 
@@ -332,7 +332,4 @@ public class GrantsNewTeleop extends LinearOpMode{
    public ElapsedTime mRunTime = new ElapsedTime();
     enum State {delay}
     State currentState;
-
-
-
 }
