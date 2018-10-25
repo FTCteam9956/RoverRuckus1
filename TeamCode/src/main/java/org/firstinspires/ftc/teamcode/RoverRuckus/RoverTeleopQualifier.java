@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+
 @TeleOp(name = "QualifierTeleop", group = "Teleop")
 public class RoverTeleopQualifier extends LinearOpMode{
 //
@@ -15,6 +17,8 @@ public class RoverTeleopQualifier extends LinearOpMode{
 //    public DcMotor right2;
 
     public RoverHardware robot = new RoverHardware();
+
+  public int OBJ = 2; // # is in CM
 
     public void runOpMode(){
         robot.init(hardwareMap);
@@ -42,6 +46,16 @@ public class RoverTeleopQualifier extends LinearOpMode{
           } else{
               robot.hang.setPower(0);
           }
+
+          if(robot.senseOBJ.getDistance(DistanceUnit.CM) > OBJ) {
+                robot.launcher.setPower(1);
+                sleep(200);
+                robot.launcher.setPower(0);
+            }
+          }
+
         }
+
+
     }
-}
+

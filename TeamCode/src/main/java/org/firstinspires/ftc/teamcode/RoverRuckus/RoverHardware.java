@@ -4,22 +4,24 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class RoverHardware{
 
     HardwareMap HwMap;
 
-
-
     //Drive Motors
     DcMotor left1;
     DcMotor left2;
     DcMotor right1;
     DcMotor right2;
-
+    DcMotor launcher;
     //Hanging Mechanism
     DcMotor hang;
+
+    //sensors
+    DistanceSensor senseOBJ;
 
     BNO055IMU imu;
 
@@ -36,8 +38,10 @@ public class RoverHardware{
         right2 = HwMap.dcMotor.get("right2");
         //Hanging Motor
         hang = HwMap.dcMotor.get("hang");
-
+        senseOBJ = HwMap.get(DistanceSensor.class, "senseOBJ");
         imu = HwMap.get(BNO055IMU.class, "imu");
+        //Launching Motor
+        launcher = HwMap.dcMotor.get("launcher");
 
         //Set DcMotor Directions and Behaviors
         left1.setDirection(DcMotorSimple.Direction.REVERSE);

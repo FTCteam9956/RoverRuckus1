@@ -36,18 +36,6 @@ public class HitBlockTest extends LinearOpMode{
 //        left1.setDirection(DcMotorSimple.Direction.REVERSE);
 //        left2.setDirection(DcMotorSimple.Direction.REVERSE);
 
-        //Initialize Gyro
-        BNO055IMU.Parameters parameters1 = new BNO055IMU.Parameters();
-        parameters1.angleUnit = BNO055IMU.AngleUnit.DEGREES;
-        parameters1.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        parameters1.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
-        parameters1.loggingEnabled = true;
-        parameters1.loggingTag = "IMU";
-        parameters1.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
-
-        robot.imu = hardwareMap.get(BNO055IMU.class, "imu");
-        robot.imu.initialize(parameters1);
-
         //Initialize OpenCV
         detector = new GoldAlignDetector();
         detector.init(hardwareMap.appContext, CameraViewDisplay.getInstance());
@@ -70,6 +58,12 @@ public class HitBlockTest extends LinearOpMode{
         waitForStart();
 
         telemetry.addData("xpos", detector.getXPosition());
+        robot.hang.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.hang.setTargetPosition(2000);
+        robot.hang.setPower(.8);
+
+        sleep(100000);
+
         while(detector.getXPosition() < 235 || detector.getXPosition() > 345){
             telemetry.addData("Status","searching for angle");
             telemetry.addData("xpos", detector.getXPosition());
