@@ -27,7 +27,7 @@ public class HitBlockTest extends LinearOpMode{
 //        left2 = hardwareMap.dcMotor.get("left2");
 //        right1 = hardwareMap.dcMotor.get("right1");
 //        right2 = hardwareMap.dcMotor.get("right2");
-
+/*
         robot.left1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.left2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.right1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -90,5 +90,7 @@ public class HitBlockTest extends LinearOpMode{
         robot.right1.setPower(.2);
         robot.right2.setPower(.2);
         sleep(3000);
+        */
     }
+
 }
