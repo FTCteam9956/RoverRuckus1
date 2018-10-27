@@ -7,23 +7,32 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+
+import java.util.Locale;
+
 public class RoverHardware{
 
     HardwareMap HwMap;
 
     //Drive Motors
-   // DcMotor left1;
-   // DcMotor left2;
-   // DcMotor right1;
-   // DcMotor right2;
+    DcMotor left1;
+    DcMotor left2;
+    DcMotor right1;
+    DcMotor right2;
     DcMotor launcher;
     //Hanging Mechanism
-  //  DcMotor hang;
+    DcMotor hang;
 
-    //sensors
+    //Create Sensors
     DistanceSensor senseOBJ;
 
+    //Create Gyro
     BNO055IMU imu;
+    Orientation angles;
+    Acceleration gravity;
 
     public RoverHardware() {System.out.println("Created new RRHardwarePresets Object!");}
 
@@ -32,19 +41,19 @@ public class RoverHardware{
 
         HwMap = hwm;
         //Drive Motors
-       // left1 = HwMap.dcMotor.get("left1");
-       // left2 = HwMap.dcMotor.get("left2");
-       // right1 = HwMap.dcMotor.get("right1");
-      //  right2 = HwMap.dcMotor.get("right2");
+        left1 = HwMap.dcMotor.get("left1");
+        left2 = HwMap.dcMotor.get("left2");
+        right1 = HwMap.dcMotor.get("right1");
+        right2 = HwMap.dcMotor.get("right2");
         //Hanging Motor
-      //  hang = HwMap.dcMotor.get("hang");
+        hang = HwMap.dcMotor.get("hang");
         senseOBJ = HwMap.get(DistanceSensor.class, "senseOBJ");
         imu = HwMap.get(BNO055IMU.class, "imu");
         //Launching Motor
         launcher = HwMap.dcMotor.get("launcher");
 
         //Set DcMotor Directions and Behaviors
-       /* left1.setDirection(DcMotorSimple.Direction.REVERSE);
+        left1.setDirection(DcMotorSimple.Direction.REVERSE);
         left2.setDirection(DcMotorSimple.Direction.REVERSE);
         right1.setDirection(DcMotorSimple.Direction.FORWARD);
         right2.setDirection(DcMotorSimple.Direction.FORWARD);
@@ -54,14 +63,22 @@ public class RoverHardware{
         left2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         right1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         right2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-       *//// hang.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        hang.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         }
     public void initServoPositions(){
 
     }
-    public void DriveStraightSetAmount(double power, int encodercounts, int sleepTimeInMillis){
-       // left1.setTargetPosition(encodercounts);
-
+    String formatAngle(AngleUnit angleUnit, double angle) {
+        return formatDegrees(AngleUnit.DEGREES.fromUnit(angleUnit, angle));
     }
-
+    String formatDegrees(double degrees) {
+        return String.format(Locale.getDefault(), "%.1f", AngleUnit.DEGREES.normalize(degrees));
+    }
+    public boolean anyMotorsBusy() {
+        if (this.left1.isBusy() || this.left2.isBusy() || this.right1.isBusy() || this.right2.isBusy()) {
+            return (true);
+        } else {
+            return (false);
+        }
+    }
 }

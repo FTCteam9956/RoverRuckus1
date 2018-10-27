@@ -5,36 +5,24 @@ import com.disnodeteam.dogecv.DogeCV;
 import com.disnodeteam.dogecv.detectors.roverrukus.GoldAlignDetector;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
-@Autonomous(name= "GoldScoutAuto", group= "Autonomous")
+import org.firstinspires.ftc.robotcore.external.Func;
 
-public class HitBlockTest extends LinearOpMode{
+public class BlueShort extends LinearOpMode {
     public RoverHardware robot = new RoverHardware();
-    public DcMotor left1;
-    public DcMotor left2;
-    public DcMotor right1;
-    public DcMotor right2;
 
     private GoldAlignDetector detector;
 
     public void runOpMode(){
         robot.init(hardwareMap);
-        left1 = hardwareMap.dcMotor.get("left1");
-        left2 = hardwareMap.dcMotor.get("left2");
-        right1 = hardwareMap.dcMotor.get("right1");
-        right2 = hardwareMap.dcMotor.get("right2");
 
-        robot.left1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.left2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.right1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.right2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        left1.setDirection(DcMotorSimple.Direction.REVERSE);
-        left2.setDirection(DcMotorSimple.Direction.REVERSE);
+        robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.left2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.right2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         //Initialize OpenCV
         detector = new GoldAlignDetector();
@@ -55,15 +43,48 @@ public class HitBlockTest extends LinearOpMode{
 
         detector.enable();
 
+        //Initialize Gyro
+        BNO055IMU.Parameters parameters1 = new BNO055IMU.Parameters();
+        parameters1.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+        parameters1.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters1.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
+        parameters1.loggingEnabled = true;
+        parameters1.loggingTag = "IMU";
+        parameters1.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
+
+        robot.imu = hardwareMap.get(BNO055IMU.class, "imu");
+        robot.imu.initialize(parameters1);
+
+        telemetry.addLine()
+                .addData("heading", new Func<String>() {
+                    @Override
+                    public String value() {
+                        return robot.formatAngle(robot.angles.angleUnit, robot.angles.firstAngle);
+                    }
+                })
+                .addData("roll", new Func<String>() {
+                    @Override
+                    public String value() {
+                        return robot.formatAngle(robot.angles.angleUnit, robot.angles.secondAngle);
+                    }
+                })
+                .addData("pitch", new Func<String>() {
+                    @Override
+                    public String value() {
+                        return robot.formatAngle(robot.angles.angleUnit, robot.angles.thirdAngle);
+                    }
+                });
         waitForStart();
 
         telemetry.addData("xpos", detector.getXPosition());
+
+        //Lower off of the Lander
         robot.hang.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.hang.setTargetPosition(2000);
-        robot.hang.setPower(.8);
+        robot.hang.setTargetPosition(1500);
+        robot.hang.setPower(0.8);
+        while(robot.hang.isBusy()){}
 
-        sleep(100000);
-
+        //Hunt for the Block
         while(detector.getXPosition() < 235 || detector.getXPosition() > 345){
             telemetry.addData("Status","searching for angle");
             telemetry.addData("xpos", detector.getXPosition());
@@ -81,6 +102,8 @@ public class HitBlockTest extends LinearOpMode{
                 robot.right2.setPower(.05);
             }
         }
+
+        //Drive Forward torwards the block
         robot.left1.setTargetPosition(750);
         robot.left2.setTargetPosition(750);
         robot.right1.setTargetPosition(750);
@@ -89,8 +112,5 @@ public class HitBlockTest extends LinearOpMode{
         robot.left2.setPower(.2);
         robot.right1.setPower(.2);
         robot.right2.setPower(.2);
-        sleep(3000);
-
     }
-
 }
