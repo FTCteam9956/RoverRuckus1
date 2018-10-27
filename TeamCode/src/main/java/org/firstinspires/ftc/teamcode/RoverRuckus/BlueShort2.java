@@ -125,7 +125,7 @@ public class BlueShort2 extends LinearOpMode {
         robot.right1.setPower(.2);
         robot.right2.setPower(.2);
 
-        while(robot.angles.firstAngle < 240){
+        while(robot.angles.firstAngle < -140){
             robot.left1.setPower(-.2);
             robot.left2.setPower(-.2);
             robot.right1.setPower(.2);
@@ -136,8 +136,8 @@ public class BlueShort2 extends LinearOpMode {
         robot.left2.setTargetPosition(1250);
         robot.right1.setTargetPosition(1250);
         robot.right2.setTargetPosition(1250);
-        robot.left1.setPower(.2*1);
-        robot.left2.setPower(.2*1);
+        robot.left1.setPower(.2);
+        robot.left2.setPower(.2);
         robot.right1.setPower(.2*1.03);
         robot.right2.setPower(.2*1.03);
 
