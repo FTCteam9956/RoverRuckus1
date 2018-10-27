@@ -7,6 +7,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
+import java.util.Locale;
+
 @TeleOp(name = "QualifierTeleop", group = "Teleop")
 public class RoverTeleopQualifier extends LinearOpMode{
 
@@ -38,6 +40,13 @@ public class RoverTeleopQualifier extends LinearOpMode{
                 sleep(250);
                 robot.launcher.setPower(0);
             }
+
+
+
+            //Telemetry Section
+            telemetry.addData("Distance (cm)", //Checks what the distance sensor on the launcher sees
+                    String.format(Locale.US, "%.02f", robot.senseOBJ.getDistance(DistanceUnit.CM)));
+
           }
         }
     }
