@@ -111,57 +111,57 @@ public class BlueLong2 extends LinearOpMode {
         robot.left2.setPower(.2);
         robot.right1.setPower(.2);
         robot.right2.setPower(.2);
+        while (robot.anyMotorsBusy()) {}
 
-        while (robot.anyMotorsBusy()) {
-        }
+        if(robot.angles.firstAngle <35){}
+        else if(robot.angles.firstAngle >= 35 && robot.angles.firstAngle < 75){}
+        else if (robot.angles.firstAngle >= 75){}
 
-        robot.left1.setTargetPosition(-500);
-        robot.left2.setTargetPosition(-500);
-        robot.right1.setTargetPosition(-500);
-        robot.right2.setTargetPosition(-500);
-        robot.left1.setPower(-.2);
-        robot.left2.setPower(-.2);
-        robot.right1.setPower(-.2);
-        robot.right2.setPower(-.2);
-
-        while (robot.anyMotorsBusy()) {
-        }
-
-        while (robot.angles.firstAngle < 50) {
-            robot.left1.setPower(-.2);
-            robot.left2.setPower(-.2);
-            robot.right1.setPower(.2);
-            robot.right2.setPower(.2);
-        }
-
-        robot.left1.setTargetPosition(1000);
-        robot.left2.setTargetPosition(1000);
-        robot.right1.setTargetPosition(1000);
-        robot.right2.setTargetPosition(1000);
+        robot.left1.setTargetPosition(500);
+        robot.left2.setTargetPosition(500);
+        robot.right1.setTargetPosition(500);
+        robot.right2.setTargetPosition(500);
         robot.left1.setPower(.2);
         robot.left2.setPower(.2);
         robot.right1.setPower(.2);
         robot.right2.setPower(.2);
+        while (robot.anyMotorsBusy()){}
 
-        while (robot.angles.firstAngle < 90) {
-            robot.left1.setPower(-.2);
-            robot.left2.setPower(-.2);
-            robot.right1.setPower(.2);
-            robot.right2.setPower(.2);
+        while (robot.angles.firstAngle < -140){
+            robot.left1.setPower(.2);
+            robot.left2.setPower(.2);
+            robot.right1.setPower(-.2);
+            robot.right2.setPower(-.2);
         }
 
-        robot.left1.setTargetPosition(1000);
-        robot.left2.setTargetPosition(1000);
-        robot.right1.setTargetPosition(1000);
-        robot.right2.setTargetPosition(1000);
+        robot.left1.setTargetPosition(750);
+        robot.left2.setTargetPosition(750);
+        robot.right1.setTargetPosition(750);
+        robot.right2.setTargetPosition(750);
         robot.left1.setPower(.2 * 1.03);
-        robot.left2.setPower(.2 * 1.03);
+        robot.left2.setPower(.2 *1.03);
         robot.right1.setPower(.2);
         robot.right2.setPower(.2);
-        while (robot.anyMotorsBusy()) {
+        while (robot.anyMotorsBusy()){}
+
+        while (robot.angles.firstAngle < -175) {
+            robot.left1.setPower(.2);
+            robot.left2.setPower(.2);
+            robot.right1.setPower(-.2);
+            robot.right2.setPower(-.2);
         }
 
-        while (robot.angles.firstAngle < 240) {
+        robot.left1.setTargetPosition(800);
+        robot.left2.setTargetPosition(800);
+        robot.right1.setTargetPosition(800);
+        robot.right2.setTargetPosition(800);
+        robot.left1.setPower(.2);
+        robot.left2.setPower(.2);
+        robot.right1.setPower(.2);
+        robot.right2.setPower(.2);
+        while (robot.anyMotorsBusy()) {}
+
+        while (robot.angles.firstAngle < -130) {
             robot.left1.setPower(-.2);
             robot.left2.setPower(-.2);
             robot.right1.setPower(.2);
@@ -186,46 +186,14 @@ public class BlueLong2 extends LinearOpMode {
         }
 
         //Drive Forward torwards the block
-        robot.left1.setTargetPosition(750);
-        robot.left2.setTargetPosition(750);
-        robot.right1.setTargetPosition(750);
-        robot.right2.setTargetPosition(750);
+        robot.left1.setTargetPosition(1250);
+        robot.left2.setTargetPosition(1250);
+        robot.right1.setTargetPosition(1250);
+        robot.right2.setTargetPosition(1250);
         robot.left1.setPower(.2);
         robot.left2.setPower(.2);
         robot.right1.setPower(.2);
         robot.right2.setPower(.2);
-        while (robot.anyMotorsBusy()) {
-        }
-
-        robot.left1.setTargetPosition(-500);
-        robot.left2.setTargetPosition(-500);
-        robot.right1.setTargetPosition(-500);
-        robot.right2.setTargetPosition(-500);
-        robot.left1.setPower(-.2);
-        robot.left2.setPower(-.2);
-        robot.right1.setPower(-.2);
-        robot.right2.setPower(-.2);
-
-        while (robot.anyMotorsBusy()) {
-        }
-
-        while (robot.angles.firstAngle < 90) {
-            robot.left1.setPower(.2);
-            robot.left2.setPower(.2);
-            robot.right1.setPower(-.2);
-            robot.right2.setPower(-.2);
-        }
-
-        //Drive Towards Crater
-        robot.left1.setTargetPosition(2500);
-        robot.left2.setTargetPosition(2500);
-        robot.right1.setTargetPosition(2500);
-        robot.right2.setTargetPosition(2500);
-        robot.left1.setPower(0.3);
-        robot.left2.setPower(0.3);
-        robot.right1.setPower(0.3);
-        robot.right2.setPower(0.3);
-        while (robot.anyMotorsBusy()) {
-        }
+        while (robot.anyMotorsBusy()){}
     }
 }
