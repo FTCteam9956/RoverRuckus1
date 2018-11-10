@@ -5,12 +5,15 @@ import com.disnodeteam.dogecv.DogeCV;
 import com.disnodeteam.dogecv.detectors.roverrukus.GoldAlignDetector;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Func;
-
+@Autonomous(name = "OneBlockCrater", group = "Autonomous")
+//@Disabled
 public class BlueShort extends LinearOpMode {
     public RoverHardware robot = new RoverHardware();
 
@@ -20,9 +23,9 @@ public class BlueShort extends LinearOpMode {
         robot.init(hardwareMap);
 
         robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.left2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        //robot.left2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.right2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        //robot.right2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         //Initialize OpenCV
         detector = new GoldAlignDetector();
@@ -79,10 +82,10 @@ public class BlueShort extends LinearOpMode {
         telemetry.addData("xpos", detector.getXPosition());
 
         //Lower off of the Lander
-        robot.hang.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.hang.setTargetPosition(1500);
-        robot.hang.setPower(0.8);
-        while(robot.hang.isBusy()){}
+//        robot.hang.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        robot.hang.setTargetPosition(1500);
+//        robot.hang.setPower(0.8);
+//        while(robot.hang.isBusy()){}
 
         //Hunt for the Block
         while(detector.getXPosition() < 235 || detector.getXPosition() > 345){
@@ -92,25 +95,74 @@ public class BlueShort extends LinearOpMode {
             if (detector.getXPosition() < 235){
                 robot.left1.setPower(.05);
                 robot.right1.setPower(-.05);
-                robot.left2.setPower(.05);
-                robot.right2.setPower(-.05);
+                //robot.left2.setPower(.05);
+                //robot.right2.setPower(-.05);
             }
             else if (detector.getXPosition() > 340){
                 robot.left1.setPower(-.05);
                 robot.right1.setPower(.05);
-                robot.left2.setPower(-.05);
-                robot.right2.setPower(.05);
+                //robot.left2.setPower(-.05);
+                //robot.right2.setPower(.05);
             }
         }
 
         //Drive Forward torwards the block
         robot.left1.setTargetPosition(750);
-        robot.left2.setTargetPosition(750);
+        //robot.left2.setTargetPosition(750);
         robot.right1.setTargetPosition(750);
-        robot.right2.setTargetPosition(750);
+        //robot.right2.setTargetPosition(750);
         robot.left1.setPower(.2);
-        robot.left2.setPower(.2);
+        //robot.left2.setPower(.2);
         robot.right1.setPower(.2);
-        robot.right2.setPower(.2);
+        //robot.right2.setPower(.2);
+
+        robot.left1.setTargetPosition(-500);
+        //robot.left2.setTargetPosition(-500);
+        robot.right1.setTargetPosition(-500);
+        //robot.right2.setTargetPosition(-500);
+        robot.left1.setPower(-.2);
+        //robot.left2.setPower(-.2);
+        robot.right1.setPower(-.2);
+        //robot.right2.setPower(-.2);
+        while(robot.anyMotorsBusy()){}
+
+        while(robot.angles.firstAngle < 85){
+            robot.left1.setPower(-.2);
+            //robot.left2.setPower(-.2);
+            robot.right1.setPower(.2);
+            //robot.right2.setPower(.2);
+        }
+
+        robot.left1.setTargetPosition(700);
+        //robot.left2.setTargetPosition(700);
+        robot.right1.setTargetPosition(700);
+        //robot.right2.setTargetPosition(700);
+        robot.left1.setPower(.2);
+        //robot.left2.setPower(.2);
+        robot.right1.setPower(.2);
+        //robot.right2.setPower(.2);
+
+        while(robot.angles.firstAngle < 150){
+            robot.left1.setPower(-.2);
+            //robot.left2.setPower(-.2);
+            robot.right1.setPower(.2);
+            //robot.right2.setPower(.2);
+        }
+
+        robot.left1.setTargetPosition(1300);
+        //robot.left2.setTargetPosition(1300);
+        robot.right1.setTargetPosition(1300);
+        //robot.right2.setTargetPosition(1300);
+        robot.left1.setPower(.2 *1.03);
+        //robot.left2.setPower(.2 * 1.03);
+        robot.right1.setPower(.2);
+        //robot.right2.setPower(.2);
+        while(robot.anyMotorsBusy()){}
+
+        robot.left1.setTargetPosition(-2000);
+        robot.right1.setTargetPosition(-2000);
+        robot.left1.setPower(0.3);
+        robot.right1.setPower(0.3);
+        while(robot.anyMotorsBusy()){}
     }
 }

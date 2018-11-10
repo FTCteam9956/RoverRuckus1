@@ -101,7 +101,7 @@ public class NewRedTurn extends LinearOpMode{
         sleep(300);
         robot.clawBottom.setPosition(0.36);
         sleep(500);
-        while (robot.clawLimit.getState() == false) {
+        while (robot.clawLimit.getState() == false){
             robot.winch.setPower(0.7);
         }
         robot.winch.setPower(0);
