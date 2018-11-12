@@ -7,8 +7,6 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
-import java.util.Locale;
-
 @TeleOp(name = "QualifierTeleop", group = "Teleop")
 public class RoverTeleopQualifier extends LinearOpMode{
 
@@ -23,30 +21,23 @@ public class RoverTeleopQualifier extends LinearOpMode{
 
         while(opModeIsActive()){
             robot.left1.setPower(gamepad1.left_stick_y * .3);
-            robot.left2.setPower(gamepad1.left_stick_y * .3);
+            //robot.left2.setpower(gamepad1.left_stick_y * .3);
             robot.right1.setPower(gamepad1.right_stick_y * .3);
-            robot.right2.setPower(gamepad1.right_stick_y * .3);
+            //robot.right2.setPower(gamepad1.right_stick_y * .3);
 
-          if (gamepad1.dpad_up){
+          if (gamepad1.dpad_up && robot.LimitA.getState() == true){
               robot.hang.setPower(-1);
-          } else if (gamepad1.dpad_down){
+          } else if (gamepad1.dpad_down && robot.LimitA.getState() == true){
              robot.hang.setPower(1);
           } else{
               robot.hang.setPower(0);
           }
 
-          if (gamepad1.x){
-                robot.launcher.setPower(1);
-                sleep(250);
-                robot.launcher.setPower(0);
-            }
-
-
-
-            //Telemetry Section
-            telemetry.addData("Distance (cm)", //Checks what the distance sensor on the launcher sees
-                    String.format(Locale.US, "%.02f", robot.senseOBJ.getDistance(DistanceUnit.CM)));
-
+//          if (gamepad1.x){
+//                robot.launcher.setPower(1);
+//                sleep(250);
+//                robot.launcher.setPower(0);
+//            }
           }
         }
     }
