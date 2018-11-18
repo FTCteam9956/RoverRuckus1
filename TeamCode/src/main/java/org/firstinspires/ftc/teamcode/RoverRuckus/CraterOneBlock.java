@@ -6,19 +6,22 @@ import com.disnodeteam.dogecv.detectors.roverrukus.GoldAlignDetector;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.Func;
 
-@Autonomous(name = "1BlockOppositePark",group = "Autonomous")
+@Autonomous(name = "CraterOneBlock", group = "Autonomous")
 //@Disabled
-public class Auti extends LinearOpMode {
+public class CraterOneBlock extends LinearOpMode {
     public RoverHardware robot = new RoverHardware();
+
     private GoldAlignDetector detector;
-    public void runOpMode() {
+
+    public void runOpMode(){
         robot.init(hardwareMap);
+
+        //Initialize OpenCV
         detector = new GoldAlignDetector();
         detector.init(hardwareMap.appContext, CameraViewDisplay.getInstance());
         detector.useDefaults();
@@ -36,6 +39,8 @@ public class Auti extends LinearOpMode {
         detector.ratioScorer.perfectRatio = 1.0;
 
         detector.enable();
+
+        //Initialize Gyro
         BNO055IMU.Parameters parameters1 = new BNO055IMU.Parameters();
         parameters1.angleUnit = BNO055IMU.AngleUnit.DEGREES;
         parameters1.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
@@ -68,101 +73,94 @@ public class Auti extends LinearOpMode {
                 });
         waitForStart();
 
-        telemetry.addData("xposition", detector.getXPosition());
-
-        //Lower robot
 //        robot.hang.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        robot.hang.setTargetPosition(2000);
-//        robot.hang.setPower(.8);
-//        while (robot.hang.isBusy()) {}
+//        robot.hang.setTargetPosition(1200);
+//        robot.hang.setPower(0.8);
+//        while (robot.hang.isBusy()){}
 
-//        while (detector.getXPosition() > 345 || detector.getXPosition() < 245) {
+        robot.hang.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.hang.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.hang.setTargetPosition(600);
+        robot.hang.setPower(0.4);
+        while(robot.hang.isBusy()){}
+
+        //Hunt for the Block
+//        while (detector.getXPosition() < 235 || detector.getXPosition() > 345){
 //            telemetry.addData("Status", "searching for angle");
 //            telemetry.addData("xpos", detector.getXPosition());
 //            telemetry.addData("IsAligned", detector.getAligned());
-//            if (detector.getXPosition() > 345) {
-//                robot.left1.setPower(-.2);
-//                robot.right1.setPower(.2);
-//            } else if (detector.getXPosition() < 245) {
-//                robot.right1.setPower(-.2);
-//                robot.left1.setPower(.2);
+//            if (detector.getXPosition() < 235) {
+//                robot.left1.setPower(.3);
+//                robot.right1.setPower(-.3);
+//            } else if (detector.getXPosition() > 340) {
+//                robot.left1.setPower(-.3);
+//                robot.right1.setPower(.3);
 //            }
-//            telemetry.addData("status", "Hunting for Block");
 //        }
-//        robot.right1.setPower(0);
 //        robot.left1.setPower(0);
+//        robot.right1.setPower(0);
 //        sleep(500);
-
-        //driveforward
-        robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.left1.setTargetPosition(1200);
-        robot.right1.setTargetPosition(1200);
-        robot.left1.setPower(.2);
-        robot.right1.setPower(.2);
-        while(robot.left1.isBusy() || robot.right1.isBusy()) {
-            telemetry.addData("Status", "Driving forward");
-        }
-
-        robot.left1.setPower(0);
-        robot.right1.setPower(0);
-        sleep(1000);
-
-//        //bopping the block
-////        robot.bop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-////        robot.bop.setTargetPosition(-1200);
-////        robot.bop.setPower(-.1);
-////        while (robot.bop.isBusy()) {}
 //
-//        //turnleft
-//        while (robot.angles.firstAngle < 47 && robot.angles.firstAngle > 53) {
-//            if (robot.angles.firstAngle < 47) {
-//                robot.left1.setPower(.1);
-//                robot.right1.setPower(-.1);
-//            } else if (robot.angles.firstAngle > 53) {
-//                robot.left1.setPower(-.1);
-//                robot.right1.setPower(.1);
-//            }
-//        }
-//
-//        //driveforward
+//        //Drive Towards the Block
 //        robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 //        robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        robot.left1.setTargetPosition(5000);
-//        robot.right1.setTargetPosition(5000);
-//        robot.left1.setPower(.2);
-//        robot.right1.setPower(.2);
-//        while(robot.left1.isBusy() || robot.right1.isBusy()) {}
-//
-//        //wallturn
-//        while (robot.angles.firstAngle < 17 && robot.angles.firstAngle > 23) {
-//            if (robot.angles.firstAngle < 17) {
-//                robot.left1.setPower(.1);
-//                robot.right1.setPower(-.1);
-//            } else if (robot.angles.firstAngle > 23) {
-//                robot.left1.setPower(-.1);
-//                robot.right1.setPower(.1);
-//            }
+//        robot.left1.setTargetPosition(1500);
+//        robot.right1.setTargetPosition(1500);
+//        robot.left1.setPower(0.5);
+//        robot.right1.setPower(0.5);
+//        while (robot.left1.isBusy() || robot.right1.isBusy()){}
+
+//        //Backup so we don't hit other blocks
+//        robot.left1.setTargetPosition(-500);
+//        robot.right1.setTargetPosition(-500);
+//        robot.left1.setPower(-0.1);
+//        robot.right1.setPower(-0.1);
+//        while (robot.left1.isBusy() || robot.right1.isBusy()) {
 //        }
 //
-//        robot.left1.setTargetPosition(1200);
-//        robot.right1.setTargetPosition(1200);
-//        robot.left1.setPower(.2 * 1.03);
-//        robot.right1.setPower(.2);
-//        while(robot.left1.isBusy() || robot.right1.isBusy()) {}
+//        //turn right
+//        while (robot.angles.firstAngle > 65 || robot.angles.firstAngle < 55) {
+//            if (robot.angles.firstAngle > 65) {
+//                robot.left1.setPower(-0.1);
+//                robot.right1.setPower(0.1);
+//            } else if (robot.angles.firstAngle < 55) {
+//                robot.left1.setPower(0.1);
+//                robot.right1.setPower(-0.1);
+//            }
 //
-//        //droppe
-//        robot.drop.setPosition(.5);
+//            robot.left1.setTargetPosition(800);
+//            robot.right1.setTargetPosition(800);
+//            robot.left1.setPower(0.1);
+//            robot.right1.setPower(0.1);
+//            while (robot.left1.isBusy() || robot.right1.isBusy()) {}
 //
-//        //reverse (set mode?/negative left)
+//            //Turn Parallel with wall
+//            while (robot.angles.firstAngle > 75 || robot.angles.firstAngle < 65) {
+//                if (robot.angles.firstAngle > 75) {
+//                    robot.left1.setPower(-0.1);
+//                    robot.right1.setPower(0.1);
+//                } else if (robot.angles.firstAngle < 75) {
+//                    robot.left1.setPower(0.1);
+//                    robot.right1.setPower(-0.1);
+//                }
+//            }
 //
-//        robot.left1.setTargetPosition(-1200);
-//        robot.right1.setTargetPosition(-1200);
-//        robot.left1.setPower(-.2 * 1.03);
-//        robot.right1.setPower(-.2);
-//        while(robot.left1.isBusy() || robot.right1.isBusy()) {}
+//            //Drive forward and slightly into the wall
+//            robot.left1.setTargetPosition(800);
+//            robot.right1.setTargetPosition(800);
+//            robot.left1.setPower(0.1 * 1.03);
+//            robot.right1.setPower(0.1);
+//            while (robot.left1.isBusy() || robot.right1.isBusy()) {}
 //
-//        //
-
+//            //Drop Icon thing
+//            //robot.drop.setPosition(0.2);
+//
+//            //Backup into crater
+//            robot.left1.setTargetPosition(-2600);
+//            robot.right1.setTargetPosition(-2600);
+//            robot.left1.setPower(0.1);
+//            robot.right1.setPower(0.1);
+//            while (robot.left1.isBusy() || robot.right1.isBusy()) {}
+//        }
     }
 }
