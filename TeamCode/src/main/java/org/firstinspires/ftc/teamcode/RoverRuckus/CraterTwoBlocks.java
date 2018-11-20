@@ -10,10 +10,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.Func;
 
-/**
- * Created by salty on 11/17/2018.
- */
-
 public class CraterTwoBlocks extends LinearOpMode {
     public RoverHardware robot = new RoverHardware();
 

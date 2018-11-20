@@ -10,7 +10,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.Func;
 
-
 public class IdleOneBlock extends LinearOpMode {
     public RoverHardware robot = new RoverHardware();
 
