@@ -63,13 +63,15 @@ public class RoverTeleopQualifier extends LinearOpMode{
               robot.drop.setPosition(0.7);
           }
           //Rotates the Bopper
-          if(gamepad1.right_trigger <= 0.5){
+          if(gamepad1.right_trigger >= 0.5){
               robot.rotateMech.setPower(gamepad1.right_trigger * 0.5);
           }
-          if (gamepad1.left_trigger <= 0.5){
+          }
+          if (gamepad1.left_trigger >= 0.5){
               robot.rotateMech.setPower(-gamepad1.left_trigger * 0.5);
           }
-
+          else{
+              robot.rotateMech.setPower(0);
 
             //Telemetry Section
 //            telemetry.addData("Distance (cm)", //Checks what the distance sensor on the launcher sees
