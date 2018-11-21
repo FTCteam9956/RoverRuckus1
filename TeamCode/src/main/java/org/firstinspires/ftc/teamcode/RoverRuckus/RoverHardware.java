@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.RoverRuckus;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
@@ -38,9 +39,9 @@ public class RoverHardware {
     //DistanceSensor senseOBJ;
     DistanceSensor sensorRange;
 
-    //Limit Switches
-    DigitalChannel LimitA;
-    DigitalChannel LimitB;
+    //Color Sensor 'Limit Switches'
+    ColorSensor bottomLimit;
+    ColorSensor upperLimit;
 
     //Create Gyro
     BNO055IMU imu;
@@ -73,24 +74,20 @@ public class RoverHardware {
         //Rotation Mechanism
         rotateMech = HwMap.dcMotor.get("rotate");
 
-        //Limit Switches
-        //LimitA = HwMap.digitalChannel.get("limitA");
-        //LimitB = HwMap.digitalChannel.get("limitB");
+        //ColorSensors
+        bottomLimit = HwMap.colorSensor.get("bottomLimit");
+        upperLimit = HwMap.colorSensor.get("upperLimit");
 
         //Range Sensors
       // sensorRange = HwMap.get(DistanceSensor.class, "sensor_range");
 
         //Set DcMotor Directions and Behaviors
         left1.setDirection(DcMotorSimple.Direction.FORWARD);
-        //left2.setDirection(DcMotorSimple.Direction.REVERSE);
         right1.setDirection(DcMotorSimple.Direction.REVERSE);
-        //right2.setDirection(DcMotorSimple.Direction.FORWARD);
 //        hang.setDirection(DcMotorSimple.Direction.FORWARD);
 
         left1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        //left2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         right1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        //right2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         hang.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         //bopper
         bop.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

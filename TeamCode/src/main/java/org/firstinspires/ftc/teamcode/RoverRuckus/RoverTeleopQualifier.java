@@ -24,10 +24,6 @@ public class RoverTeleopQualifier extends LinearOpMode{
         waitForStart();
 
         while(opModeIsActive()){
-//            robot.left1.setPower(gamepad1.left_stick_y * .3);
-//            robot.left2.setPower(gamepad1.left_stick_y * .3);
-//            robot.right1.setPower(gamepad1.right_stick_y * .3);
-//            robot.right2.setPower(gamepad1.right_stick_y * .3);
 
             //Drive Motors
             leftPower = (gamepad1.left_stick_y + gamepad1.left_stick_x);
@@ -41,9 +37,9 @@ public class RoverTeleopQualifier extends LinearOpMode{
             robot.bop.setPower(gamepad1.right_stick_y * 0.5);
 
             // Hang Mechanism
-          if (gamepad1.dpad_up){
+          if (gamepad1.dpad_up && robot.upperLimit.red() < 110){
               robot.hang.setPower(-1);
-          } else if (gamepad1.dpad_down){
+          } else if (gamepad1.dpad_down && robot.bottomLimit.red() < 110){
              robot.hang.setPower(1);
           } else{
               robot.hang.setPower(0);
@@ -81,5 +77,5 @@ public class RoverTeleopQualifier extends LinearOpMode{
             telemetry.addData("Right Power", rightPower);
             telemetry.addData("Gamepad Tigger", gamepad1.right_trigger);
         }
-        }
     }
+}
