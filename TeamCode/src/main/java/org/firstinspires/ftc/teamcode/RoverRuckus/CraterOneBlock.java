@@ -78,46 +78,48 @@ public class CraterOneBlock extends LinearOpMode {
 //        robot.hang.setPower(0.8);
 //        while (robot.hang.isBusy()){}
 
-        robot.hang.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.hang.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.hang.setTargetPosition(600);
-        robot.hang.setPower(0.4);
-        while(robot.hang.isBusy()){}
+        //Raise arm
+        while(robot.upperLimit.red() < 390){
+            robot.hang.setPower(1);
+        }
+        robot.hang.setPower(0);
+        sleep(500);
+
+        //Drive forward slightly
+        robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.left1.setTargetPosition(400);
+        robot.right1.setTargetPosition(400);
+        robot.left1.setPower(0.2);
+        robot.right1.setPower(0.2);
+        while(robot.left1.isBusy()){}
+
 
         //Hunt for the Block
-//        while (detector.getXPosition() < 235 || detector.getXPosition() > 345){
-//            telemetry.addData("Status", "searching for angle");
-//            telemetry.addData("xpos", detector.getXPosition());
-//            telemetry.addData("IsAligned", detector.getAligned());
-//            if (detector.getXPosition() < 235) {
-//                robot.left1.setPower(.3);
-//                robot.right1.setPower(-.3);
-//            } else if (detector.getXPosition() > 340) {
-//                robot.left1.setPower(-.3);
-//                robot.right1.setPower(.3);
-//            }
-//        }
-//        robot.left1.setPower(0);
-//        robot.right1.setPower(0);
-//        sleep(500);
-//
-//        //Drive Towards the Block
-//        robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        robot.left1.setTargetPosition(1500);
-//        robot.right1.setTargetPosition(1500);
-//        robot.left1.setPower(0.5);
-//        robot.right1.setPower(0.5);
-//        while (robot.left1.isBusy() || robot.right1.isBusy()){}
+        while (detector.getXPosition() < 235 || detector.getXPosition() > 345){
+            telemetry.addData("Status", "searching for angle");
+            telemetry.addData("xpos", detector.getXPosition());
+            telemetry.addData("IsAligned", detector.getAligned());
+            if (detector.getXPosition() < 235) {
+                robot.left1.setPower(.3);
+                robot.right1.setPower(-.3);
+            } else if (detector.getXPosition() > 340) {
+                robot.left1.setPower(-.3);
+                robot.right1.setPower(.3);
+            }
+        }
+        robot.left1.setPower(0);
+        robot.right1.setPower(0);
+        sleep(500);
 
-//        //Backup so we don't hit other blocks
-//        robot.left1.setTargetPosition(-500);
-//        robot.right1.setTargetPosition(-500);
-//        robot.left1.setPower(-0.1);
-//        robot.right1.setPower(-0.1);
-//        while (robot.left1.isBusy() || robot.right1.isBusy()) {
-//        }
-//
+        //Lower intake and extend arm out
+        robot.bop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.bop.setTargetPosition(1200);
+        robot.bop.setPower(0.4);
+        while(robot.bop.isBusy()){
+            robot.drop.setPosition(robot.BOTTOM_INTAKE);
+        }
+
 //        //turn right
 //        while (robot.angles.firstAngle > 65 || robot.angles.firstAngle < 55) {
 //            if (robot.angles.firstAngle > 65) {

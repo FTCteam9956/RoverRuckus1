@@ -21,32 +21,35 @@ public class RoverHardware {
     HardwareMap HwMap;
 
     //Drive Motors
-    DcMotor left1;
+    public DcMotor left1;
     // DcMotor left2;
-    DcMotor right1;
+    public DcMotor right1;
    //DcMotor right2;
-    DcMotor launcher;
+    public DcMotor launcher;
     //Hanging Mechanism
-    DcMotor hang;
+    public DcMotor hang;
     //bopper
-    DcMotor bop;
+    public DcMotor bop;
     //dropper
-    Servo drop;
+    public Servo drop;
     //Rotation Mechanism
-    DcMotor rotateMech;
+    public DcMotor rotateMech;
 
     //Create Sensors
     //DistanceSensor senseOBJ;
-    DistanceSensor sensorRange;
+    public DistanceSensor sensorRange;
 
     //Color Sensor 'Limit Switches'
-    ColorSensor bottomLimit;
-    ColorSensor upperLimit;
+    public ColorSensor bottomLimit;
+    public ColorSensor upperLimit;
 
     //Create Gyro
     BNO055IMU imu;
     Orientation angles;
     Acceleration gravity;
+
+    public final double BOTTOM_INTAKE = 0.85;
+    public final double TOP_INTAKE = 0.3;
 
     public RoverHardware() {
         System.out.println("Created new RRHardwarePresets Object!");
@@ -58,9 +61,7 @@ public class RoverHardware {
         HwMap = hwm;
         //Drive Motors
         left1 = HwMap.dcMotor.get("left1");
-         //left2 = HwMap.dcMotor.get("left2");
         right1 = HwMap.dcMotor.get("right1");
-         //right2 = HwMap.dcMotor.get("right2");
         //Hanging Motor
         hang = HwMap.dcMotor.get("hang");
         //senseOBJ = HwMap.get(DistanceSensor.class, "senseOBJ");
