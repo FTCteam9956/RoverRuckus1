@@ -33,9 +33,9 @@ public class RoverTeleopQualifier extends LinearOpMode{
             leftPower = (gamepad1.left_stick_y + gamepad1.left_stick_x);
             rightPower = (gamepad1.left_stick_y - gamepad1.left_stick_x);
             //Tank Drive
-            robot.left1.setPower(-leftPower / 1.5);
+            robot.left1.setPower(-leftPower / 1.25);
 
-            robot.right1.setPower(-rightPower / 1.5);
+            robot.right1.setPower(-rightPower / 1.25);
 
             //Moves the Bopper In and Out
             robot.bop.setPower(gamepad1.right_stick_y * 0.5);
@@ -56,23 +56,22 @@ public class RoverTeleopQualifier extends LinearOpMode{
             }
             //Sets Servo Position to Top
           if (gamepad1.y) {
-                robot.drop.setPosition(0);
+                robot.drop.setPosition(0.3);
           }
             //Sets Servo Position to Bottom
           if(gamepad1.a){
-              robot.drop.setPosition(0.7);
+              robot.drop.setPosition(0.85);
           }
           //Rotates the Bopper
           if(gamepad1.right_trigger >= 0.5){
               robot.rotateMech.setPower(gamepad1.right_trigger * 0.5);
           }
-          }
-          if (gamepad1.left_trigger >= 0.5){
+          else if (gamepad1.left_trigger >= 0.5){
               robot.rotateMech.setPower(-gamepad1.left_trigger * 0.5);
           }
-          else{
+          else {
               robot.rotateMech.setPower(0);
-
+          }
             //Telemetry Section
 //            telemetry.addData("Distance (cm)", //Checks what the distance sensor on the launcher sees
 //                    String.format(Locale.US, "%.02f", robot.senseOBJ.getDistance(DistanceUnit.CM)));
