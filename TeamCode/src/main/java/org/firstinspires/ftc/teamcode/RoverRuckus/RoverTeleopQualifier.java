@@ -77,6 +77,17 @@ public class RoverTeleopQualifier extends LinearOpMode{
               robot.rotateMech.setPower(0);
           }
 
+          //Ball Catching Controls
+            if(gamepad1.right_bumper){
+              robot.ballCatch.setPower(0.75);
+            }
+            else if(gamepad1.left_bumper){
+              robot.ballCatch.setPower(-0.75);
+            }
+            else{
+              robot.ballCatch.setPower(0);
+            }
+
 
             //Telemetry Section
 //            telemetry.addData("Distance (cm)", //Checks what the distance sensor on the launcher sees

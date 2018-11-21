@@ -34,6 +34,9 @@ public class RoverHardware {
     public Servo drop;
     //Rotation Mechanism
     public DcMotor rotateMech;
+    // Ball Catcher???
+    public DcMotor  ballCatch;
+
 
     //Create Sensors
     //DistanceSensor senseOBJ;
@@ -70,7 +73,8 @@ public class RoverHardware {
         bop = HwMap.dcMotor.get("bop");
         //Rotation Mechanism
         rotateMech = HwMap.dcMotor.get("rotate");
-
+        //Ball Catcher
+        ballCatch = HwMap.dcMotor.get("ballCatch");
         //dropper
         drop = HwMap.servo.get("drop");
 
