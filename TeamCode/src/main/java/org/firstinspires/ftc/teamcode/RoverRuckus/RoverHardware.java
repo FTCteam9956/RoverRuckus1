@@ -35,7 +35,7 @@ public class RoverHardware {
     DcMotor rotateMech;
 
     //Create Sensors
-    DistanceSensor senseOBJ;
+    //DistanceSensor senseOBJ;
     DistanceSensor sensorRange;
 
     //Limit Switches
@@ -62,7 +62,7 @@ public class RoverHardware {
          //right2 = HwMap.dcMotor.get("right2");
         //Hanging Motor
         hang = HwMap.dcMotor.get("hang");
-        senseOBJ = HwMap.get(DistanceSensor.class, "senseOBJ");
+        //senseOBJ = HwMap.get(DistanceSensor.class, "senseOBJ");
         imu = HwMap.get(BNO055IMU.class, "imu");
         //Launching Motor
         launcher = HwMap.dcMotor.get("launcher");
