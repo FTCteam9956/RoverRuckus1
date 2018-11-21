@@ -23,17 +23,19 @@ public class RoverHardware {
     DcMotor left1;
     // DcMotor left2;
     DcMotor right1;
-    //DcMotor right2;
-//    DcMotor launcher;
+   //DcMotor right2;
+    DcMotor launcher;
     //Hanging Mechanism
     DcMotor hang;
     //bopper
-//    DcMotor bop;
+    DcMotor bop;
     //dropper
-//    Servo drop;
+    Servo drop;
+    //Rotation Mechanism
+    DcMotor rotateMech;
 
     //Create Sensors
-//    DistanceSensor senseOBJ;
+    //DistanceSensor senseOBJ;
     DistanceSensor sensorRange;
 
     //Limit Switches
@@ -55,22 +57,24 @@ public class RoverHardware {
         HwMap = hwm;
         //Drive Motors
         left1 = HwMap.dcMotor.get("left1");
-        // left2 = HwMap.dcMotor.get("left2");
+         //left2 = HwMap.dcMotor.get("left2");
         right1 = HwMap.dcMotor.get("right1");
-        // right2 = HwMap.dcMotor.get("right2");
+         //right2 = HwMap.dcMotor.get("right2");
         //Hanging Motor
         hang = HwMap.dcMotor.get("hang");
-//        senseOBJ = HwMap.get(DistanceSensor.class, "senseOBJ");
+        //senseOBJ = HwMap.get(DistanceSensor.class, "senseOBJ");
         imu = HwMap.get(BNO055IMU.class, "imu");
         //Launching Motor
-//        launcher = HwMap.dcMotor.get("launcher");
+        launcher = HwMap.dcMotor.get("launcher");
         //bopper
-//        bop = HwMap.dcMotor.get("bop");
+        bop = HwMap.dcMotor.get("bop");
         //dropper
-//        drop = HwMap.servo.get("drop");
+        drop = HwMap.servo.get("drop");
+        //Rotation Mechanism
+        rotateMech = HwMap.dcMotor.get("rotate");
 
         //Limit Switches
-        LimitA = HwMap.digitalChannel.get("limitA");
+        //LimitA = HwMap.digitalChannel.get("limitA");
         //LimitB = HwMap.digitalChannel.get("limitB");
 
         //Range Sensors
@@ -89,7 +93,7 @@ public class RoverHardware {
         //right2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         hang.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         //bopper
-        //bop.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        bop.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         //dropper
     }
 //
