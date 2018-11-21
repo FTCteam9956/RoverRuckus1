@@ -64,20 +64,22 @@ public class RoverHardware {
         right1 = HwMap.dcMotor.get("right1");
         //Hanging Motor
         hang = HwMap.dcMotor.get("hang");
-        //senseOBJ = HwMap.get(DistanceSensor.class, "senseOBJ");
-        imu = HwMap.get(BNO055IMU.class, "imu");
         //Launching Motor
         launcher = HwMap.dcMotor.get("launcher");
         //bopper
         bop = HwMap.dcMotor.get("bop");
-        //dropper
-        drop = HwMap.servo.get("drop");
         //Rotation Mechanism
         rotateMech = HwMap.dcMotor.get("rotate");
+
+        //dropper
+        drop = HwMap.servo.get("drop");
 
         //ColorSensors
         bottomLimit = HwMap.colorSensor.get("bottomLimit");
         upperLimit = HwMap.colorSensor.get("upperLimit");
+
+        //Gyro
+        imu = HwMap.get(BNO055IMU.class, "imu");
 
         //Range Sensors
       // sensorRange = HwMap.get(DistanceSensor.class, "sensor_range");
@@ -85,17 +87,21 @@ public class RoverHardware {
         //Set DcMotor Directions and Behaviors
         left1.setDirection(DcMotorSimple.Direction.FORWARD);
         right1.setDirection(DcMotorSimple.Direction.REVERSE);
-//        hang.setDirection(DcMotorSimple.Direction.FORWARD);
+        hang.setDirection(DcMotorSimple.Direction.FORWARD);
+        bop.setDirection(DcMotorSimple.Direction.FORWARD);
+        launcher.setDirection(DcMotorSimple.Direction.FORWARD);
+        rotateMech.setDirection(DcMotorSimple.Direction.FORWARD);
 
         left1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         right1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         hang.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        //bopper
         bop.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        //dropper
+        launcher.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rotateMech.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 //
     public void initServoPositions() {
+        drop.setPosition(TOP_INTAKE);
     }
 
     String formatAngle(AngleUnit angleUnit, double angle) {

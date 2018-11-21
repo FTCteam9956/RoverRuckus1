@@ -15,7 +15,6 @@ public class RoverTeleopQualifier extends LinearOpMode{
 
     public RoverHardware robot = new RoverHardware();
 
-  public int OBJ = 2; // # is in CM
     public float leftPower;
     public float rightPower;
     public float xValue;
@@ -42,9 +41,9 @@ public class RoverTeleopQualifier extends LinearOpMode{
             robot.bop.setPower(gamepad1.right_stick_y * 0.5);
 
             //Hanging Mechanism
-          if (gamepad1.dpad_up && robot.upperLimit.red() < 390){
+          if (gamepad1.dpad_up && robot.upperLimit.red() > 300){
               robot.hang.setPower(1);
-          } else if (gamepad1.dpad_down && robot.bottomLimit.red() < 110){
+          } else if (gamepad1.dpad_down && robot.bottomLimit.red() < 100){
              robot.hang.setPower(-1);
           } else{
               robot.hang.setPower(0);
@@ -69,10 +68,10 @@ public class RoverTeleopQualifier extends LinearOpMode{
 
           //Rotates the Bopper
           if(gamepad1.right_trigger >= 0.5){
-              robot.rotateMech.setPower(gamepad1.right_trigger * 0.5);
+              robot.rotateMech.setPower(-gamepad1.right_trigger * 0.5);
           }
           else if (gamepad1.left_trigger >= 0.5){
-              robot.rotateMech.setPower(-gamepad1.left_trigger * 0.5);
+              robot.rotateMech.setPower(gamepad1.left_trigger * 0.5);
           }
           else {
               robot.rotateMech.setPower(0);
@@ -83,13 +82,17 @@ public class RoverTeleopQualifier extends LinearOpMode{
 //            telemetry.addData("Distance (cm)", //Checks what the distance sensor on the launcher sees
 //            String.format(Locale.US, "%.02f", robot.senseOBJ.getDistance(DistanceUnit.CM)));
 
-            telemetry.addData("Left Power", leftPower);
-            telemetry.addData("Right Power", rightPower);
-            telemetry.addData("Gamepad Tigger", gamepad1.right_trigger);
-            telemetry.addData("uppercolor", robot.upperLimit.red());
-            telemetry.addData("bottomcolor", robot.bottomLimit.red());
-            telemetry.addData("stick", "  y=" + yValue + "  x=" + xValue);
-            telemetry.addData("power", "  left=" + leftPower + "  right=" + rightPower);
+//            telemetry.addData("Left Power", leftPower);
+//            telemetry.addData("Right Power", rightPower);
+//            telemetry.addData("Gamepad Tigger", gamepad1.right_trigger);
+//            telemetry.addData("upper red", robot.upperLimit.red());
+//            telemetry.addData("upper blue", robot.upperLimit.blue());
+//            telemetry.addData("bottom red", robot.bottomLimit.red());
+//            telemetry.addData("bottom blue", robot.bottomLimit.blue());
+//            telemetry.addData("stick", "  y=" + yValue + "  x=" + xValue);
+//            telemetry.addData("power", "  left=" + leftPower + "  right=" + rightPower);
+            telemetry.addData("Arm power", robot.bop.getPower());
+            telemetry.addData("Arm position", robot.bop.getCurrentPosition());
             telemetry.update();
         }
     }
