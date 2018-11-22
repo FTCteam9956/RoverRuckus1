@@ -1,10 +1,17 @@
 package org.firstinspires.ftc.teamcode.RoverRuckus;
 
+import android.provider.CalendarContract;
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.Range;
+import java.util.TimerTask;
+import java.util.Timer;
+import java.lang.Object;
+
+
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
@@ -19,6 +26,8 @@ public class RoverTeleopQualifier extends LinearOpMode{
     public float rightPower;
     public float xValue;
     public float yValue;
+
+    Timer stopMotor;
 
     public void runOpMode(){
         robot.init(hardwareMap);
@@ -51,9 +60,9 @@ public class RoverTeleopQualifier extends LinearOpMode{
 
             //Shoots blocks
           if (gamepad1.b){
-                robot.launcher.setPower(-1);
-                sleep(250);
-                robot.launcher.setPower(0);
+              robot.launcher.setPower(-1);
+              stopMotor.schedule(new RemindTask(),1,0);
+
             }
 
             //Sets Servo Position to Top
@@ -105,6 +114,12 @@ public class RoverTeleopQualifier extends LinearOpMode{
             telemetry.addData("Arm power", robot.bop.getPower());
             telemetry.addData("Arm position", robot.bop.getCurrentPosition());
             telemetry.update();
+        }
+    }
+    class RemindTask extends TimerTask{
+        public void run(){
+            robot.launcher.setPower(0);
+            stopMotor.cancel();
         }
     }
 }
