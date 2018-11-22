@@ -54,8 +54,8 @@ public class RoverHardware {
     Orientation angles;
     Acceleration gravity;
 
-    public final double BOTTOM_INTAKE = 0.85;
-    public final double TOP_INTAKE = 0.3;
+    public final double BOTTOM_INTAKE = 1;
+    public final double TOP_INTAKE = 0.45;
 
     public RoverHardware() {
         System.out.println("Created new RRHardwarePresets Object!");

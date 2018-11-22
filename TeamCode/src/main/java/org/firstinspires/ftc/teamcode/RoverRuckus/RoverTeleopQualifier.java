@@ -61,7 +61,7 @@ public class RoverTeleopQualifier extends LinearOpMode{
             //Shoots blocks
           if (gamepad1.b){
               robot.launcher.setPower(-1);
-              stopMotor.schedule(new RemindTask(),1,0);
+              stopMotor.schedule(new RemindTask(),2,0);
 
             }
 
