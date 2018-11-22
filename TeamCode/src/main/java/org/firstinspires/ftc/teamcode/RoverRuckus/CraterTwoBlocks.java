@@ -71,49 +71,62 @@ public class CraterTwoBlocks extends LinearOpMode {
                 });
         waitForStart();
 
-        robot.hang.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.hang.setTargetPosition(1200);
-        robot.hang.setPower(0.8);
-        while (robot.hang.isBusy()){}
+        //Raise arm
+        while(robot.upperLimit.red() < 390){
+            robot.hang.setPower(1);
+        }
+        robot.hang.setPower(0);
+        sleep(500);
+
+        //Drive forward slightly
+        robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.left1.setTargetPosition(400);
+        robot.right1.setTargetPosition(400);
+        robot.left1.setPower(0.2);
+        robot.right1.setPower(0.2);
+        while(robot.left1.isBusy()){}
+
 
         //Hunt for the Block
-        while (detector.getXPosition() < 235 || detector.getXPosition() > 345) {
+        while (detector.getXPosition() < 235 || detector.getXPosition() > 345){
             telemetry.addData("Status", "searching for angle");
             telemetry.addData("xpos", detector.getXPosition());
             telemetry.addData("IsAligned", detector.getAligned());
             if (detector.getXPosition() < 235) {
-                robot.left1.setPower(.05);
-                robot.right1.setPower(-.05);
-            } else if (detector.getXPosition() > 340) {
-                robot.left1.setPower(-.05);
-                robot.right1.setPower(.05);
+                robot.left1.setPower(.3);
+                robot.right1.setPower(-.3);
+            } else if (detector.getXPosition() > 340){
+                robot.left1.setPower(-.3);
+                robot.right1.setPower(.3);
             }
         }
+        robot.left1.setPower(0);
+        robot.right1.setPower(0);
+        sleep(500);
 
-        //Drive Towards the Block
-        robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.left1.setTargetPosition(1000);
-        robot.right1.setTargetPosition(1000);
-        robot.left1.setPower(0.1);
-        robot.right1.setPower(0.1);
-        while (robot.left1.isBusy() || robot.right1.isBusy()) {
+        //Lower intake and extend arm out
+        robot.bop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.bop.setTargetPosition(-1200);
+        robot.bop.setPower(-0.4);
+        while(robot.bop.isBusy()) {
+            robot.drop.setPosition(robot.BOTTOM_INTAKE);
         }
 
-        //Backup so we don't hit other blocks
-        robot.left1.setTargetPosition(-500);
-        robot.right1.setTargetPosition(-500);
-        robot.left1.setPower(-0.1);
-        robot.right1.setPower(-0.1);
-        while (robot.left1.isBusy() || robot.right1.isBusy()) {
+        //bring arm back in
+        robot.bop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.bop.setTargetPosition(-1200);
+        robot.bop.setPower(-0.4);
+        while(robot.bop.isBusy()) {
+            robot.drop.setPosition(robot.TOP_INTAKE);
         }
 
-        //turn right
+        //turn left
         while (robot.angles.firstAngle > 65 || robot.angles.firstAngle < 55) {
             if (robot.angles.firstAngle > 65) {
                 robot.left1.setPower(-0.1);
                 robot.right1.setPower(0.1);
-            } else if (robot.angles.firstAngle < 55) {
+            } else if (robot.angles.firstAngle < 55){
                 robot.left1.setPower(0.1);
                 robot.right1.setPower(-0.1);
             }
@@ -124,7 +137,7 @@ public class CraterTwoBlocks extends LinearOpMode {
             robot.right1.setPower(0.1);
             while (robot.left1.isBusy() || robot.right1.isBusy()) {}
 
-            //Turn Parallel with wall
+            //Turn towards blocks
             while (robot.angles.firstAngle > 95 || robot.angles.firstAngle > 85){
                 if (robot.angles.firstAngle > 95) {
                     robot.left1.setPower(0.1);
@@ -168,16 +181,23 @@ public class CraterTwoBlocks extends LinearOpMode {
             }
 
             //Hit block
-            robot.left1.setTargetPosition(800);
-            robot.right1.setTargetPosition(800);
-            robot.left1.setPower(0.1);
-            robot.right1.setPower(0.1);
-            while (robot.left1.isBusy() || robot.right1.isBusy()) {}
+            //Lower intake and extend arm out
+            robot.bop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.bop.setTargetPosition(-1200);
+            robot.bop.setPower(-0.4);
+            while(robot.bop.isBusy()) {
+                robot.drop.setPosition(robot.BOTTOM_INTAKE);
+            }
 
-            //Drop Icon thing
-            //robot.drop.setPosition(0.2);
+            //bring arm back in
+            robot.bop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.bop.setTargetPosition(-1200);
+            robot.bop.setPower(-0.4);
+            while(robot.bop.isBusy()) {
+                robot.drop.setPosition(robot.TOP_INTAKE);
+            }
 
-            //Turn Torwards Crater
+            //turn right
             while (robot.angles.firstAngle > 30 || robot.angles.firstAngle < 40){
                 if (robot.angles.firstAngle > 30) {
                     robot.left1.setPower(0.1);
@@ -187,6 +207,27 @@ public class CraterTwoBlocks extends LinearOpMode {
                     robot.right1.setPower(0.1);
                 }
             }
+
+            //Drive forward
+            robot.setRunMode("STOP_AND_RESET_ENCODERS");
+            robot.setRunMode("RUN_TO_POSITION");
+            robot.setAllTargetPositions(-1000);
+            robot.setMotorPower(-0.2);
+
+            //turn left
+            while(robot.angles.firstAngle > 0 || (robot.angles.firstAngle > -90 && robot.angles.firstAngle < 0)){ //target -170
+                robot.left1.setPower(-0.3);
+                robot.right1.setPower(0.3);
+            }
+
+            //Drive forward
+            robot.setRunMode("STOP_AND_RESET_ENCODERS");
+            robot.setRunMode("RUN_TO_POSITION");
+            robot.setAllTargetPositions(-500);
+            robot.setMotorPower(-0.2);
+
+            //Drop Icon thing
+            //robot.drop.setPosition(0.2);
 
             //Backup into crater
             robot.left1.setTargetPosition(-2600);

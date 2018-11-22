@@ -1,15 +1,20 @@
 package org.firstinspires.ftc.teamcode.RoverRuckus;
 
-        import com.disnodeteam.dogecv.CameraViewDisplay;
-        import com.disnodeteam.dogecv.DogeCV;
-        import com.disnodeteam.dogecv.detectors.roverrukus.GoldAlignDetector;
-        import com.qualcomm.hardware.bosch.BNO055IMU;
-        import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
-        import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-        import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-        import com.qualcomm.robotcore.hardware.DcMotor;
+import com.disnodeteam.dogecv.CameraViewDisplay;
+import com.disnodeteam.dogecv.DogeCV;
+import com.disnodeteam.dogecv.detectors.roverrukus.GoldAlignDetector;
+import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
-        import org.firstinspires.ftc.robotcore.external.Func;
+import org.firstinspires.ftc.robotcore.external.Func;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+
+import java.util.Locale;
 
 @Autonomous(name = "CraterOneBlock", group = "Autonomous")
 //@Disabled
@@ -52,6 +57,8 @@ public class CraterOneBlock extends LinearOpMode {
         robot.imu = hardwareMap.get(BNO055IMU.class, "imu");
         robot.imu.initialize(parameters1);
 
+        composeTelemetry();
+
         telemetry.addLine()
                 .addData("heading", new Func<String>() {
                     @Override
@@ -79,7 +86,7 @@ public class CraterOneBlock extends LinearOpMode {
 //        while (robot.hang.isBusy()){}
 
         //Raise arm
-        while(robot.upperLimit.red() < 390){
+        while (robot.upperLimit.red() > 300) {
             robot.hang.setPower(1);
         }
         robot.hang.setPower(0);
@@ -88,79 +95,117 @@ public class CraterOneBlock extends LinearOpMode {
         //Drive forward slightly
         robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.left1.setTargetPosition(400);
-        robot.right1.setTargetPosition(400);
+        robot.left1.setTargetPosition(900);
+        robot.right1.setTargetPosition(900);
         robot.left1.setPower(0.2);
         robot.right1.setPower(0.2);
-        while(robot.left1.isBusy()){}
-
-
+        while (robot.left1.isBusy()) {
+            telemetry.addData("right power", robot.right1.getPower());
+            telemetry.addData("right position", robot.right1.getCurrentPosition());
+            telemetry.addData("white power", robot.left1.getPower());
+            telemetry.addData("left position", robot.left1.getCurrentPosition());
+            telemetry.update();
+        }
         //Hunt for the Block
-        while (detector.getXPosition() < 235 || detector.getXPosition() > 345){
+        robot.left1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.right1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        while(detector.getXPosition() < 235 || detector.getXPosition() > 345){
             telemetry.addData("Status", "searching for angle");
             telemetry.addData("xpos", detector.getXPosition());
             telemetry.addData("IsAligned", detector.getAligned());
-            if (detector.getXPosition() < 235) {
-                robot.left1.setPower(.3);
-                robot.right1.setPower(-.3);
+            if (detector.getXPosition() < 235){
+                robot.left1.setPower(.4);
+                robot.right1.setPower(-.4);
             } else if (detector.getXPosition() > 340){
-                robot.left1.setPower(-.3);
-                robot.right1.setPower(.3);
+                robot.left1.setPower(-.4);
+                robot.right1.setPower(.4);
             }
         }
         robot.left1.setPower(0);
         robot.right1.setPower(0);
         sleep(500);
 
-        //Lower intake and extend arm out
-        robot.bop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.bop.setTargetPosition(-1200);
-        robot.bop.setPower(-0.4);
-        while(robot.bop.isBusy()) {
-            robot.drop.setPosition(robot.BOTTOM_INTAKE);
-        }
+//        //Lower intake and extend arm out
+//        robot.bop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        robot.bop.setTargetPosition(-1800);
+//        robot.bop.setPower(-0.4);
+//        while(robot.bop.isBusy()) {
+//            robot.drop.setPosition(robot.BOTTOM_INTAKE);
+//        }
+//
+//        //bring arm back in
+//        robot.bop.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        robot.bop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        robot.bop.setTargetPosition(1800);
+//        robot.bop.setPower(0.4);
+//        while(robot.bop.isBusy()){
+//            robot.drop.setPosition(robot.TOP_INTAKE);
+//        }
 
-        //bring arm back in
-        robot.bop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.bop.setTargetPosition(-1200);
-        robot.bop.setPower(-0.4);
-        while(robot.bop.isBusy()) {
-            robot.drop.setPosition(robot.BOTTOM_INTAKE);
+        //turn right
+        telemetry.update();
+        while (robot.angles.firstAngle > 75 && opModeIsActive() || robot.angles.firstAngle < 70 && opModeIsActive()) {
+            telemetry.update();
+            if (robot.angles.firstAngle > 75) {
+                robot.left1.setPower(-0.5);
+                robot.right1.setPower(0.5);
+                telemetry.update();
+            } else if (robot.angles.firstAngle < 70) {
+                robot.left1.setPower(0.5);
+                robot.right1.setPower(-0.5);
+            }
+            telemetry.update();
         }
+//
 
-//        //turn right
-//        while (robot.angles.firstAngle > 65 || robot.angles.firstAngle < 55) {
-//            if (robot.angles.firstAngle > 65) {
-//                robot.left1.setPower(-0.1);
-//                robot.right1.setPower(0.1);
-//            } else if (robot.angles.firstAngle < 55) {
-//                robot.left1.setPower(0.1);
-//                robot.right1.setPower(-0.1);
-//            }
+        robot.right1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.left1.setTargetPosition(7000);
+        robot.right1.setTargetPosition(7000);
+        robot.left1.setPower(0.4);
+        robot.right1.setPower(0.4);
+        while (robot.left1.isBusy() || robot.right1.isBusy()){}
+        robot.right1.setPower(0);
+        robot.left1.setPower(0);
 //
-//            robot.left1.setTargetPosition(800);
-//            robot.right1.setTargetPosition(800);
-//            robot.left1.setPower(0.1);
-//            robot.right1.setPower(0.1);
-//            while (robot.left1.isBusy() || robot.right1.isBusy()) {}
-//
-//            //Turn Parallel with wall
-//            while (robot.angles.firstAngle > 75 || robot.angles.firstAngle < 65) {
-//                if (robot.angles.firstAngle > 75) {
-//                    robot.left1.setPower(-0.1);
-//                    robot.right1.setPower(0.1);
-//                } else if (robot.angles.firstAngle < 75) {
-//                    robot.left1.setPower(0.1);
-//                    robot.right1.setPower(-0.1);
-//                }
-//            }
-//
-//            //Drive forward and slightly into the wall
-//            robot.left1.setTargetPosition(800);
-//            robot.right1.setTargetPosition(800);
-//            robot.left1.setPower(0.1 * 1.03);
-//            robot.right1.setPower(0.1);
-//            while (robot.left1.isBusy() || robot.right1.isBusy()) {}
+        //Turn Parallel with wall
+        telemetry.update();
+        robot.left1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.right1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        while (robot.angles.firstAngle > -55 || (robot.angles.firstAngle < -65 && robot.angles.firstAngle < 0)) {
+            robot.left1.setPower(-0.5);
+            robot.right1.setPower(0.5);
+            telemetry.update();
+        }
+        robot.left1.setPower(0);
+        robot.right1.setPower(0);
+
+            //Drive forward and slightly into the wall
+        robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.right1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.left1.setTargetPosition(-5300);
+        robot.right1.setTargetPosition(-5300);
+        robot.left1.setPower(-0.4 * 1.03);
+        robot.right1.setPower(-0.4);
+        while (robot.left1.isBusy() || robot.right1.isBusy()){}
+        robot.left1.setPower(0);
+        robot.right1.setPower(0);
+
+        telemetry.update();
+        robot.left1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.right1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        while (robot.angles.firstAngle < 45) {
+            robot.left1.setPower(-0.5);
+            robot.right1.setPower(0.5);
+            telemetry.update();
+        }
+        robot.left1.setPower(0);
+        robot.right1.setPower(0);
+
 //
 //            //Drop Icon thing
 //            //robot.drop.setPosition(0.2);
@@ -171,6 +216,65 @@ public class CraterOneBlock extends LinearOpMode {
 //            robot.left1.setPower(0.1);
 //            robot.right1.setPower(0.1);
 //            while (robot.left1.isBusy() || robot.right1.isBusy()) {}
-//        }
+//      }
+    }
+    void composeTelemetry() {
+
+        telemetry.addAction(new Runnable() {
+            @Override
+            public void run() {
+                robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+                robot.gravity = robot.imu.getGravity();
+            }
+        });
+        telemetry.addLine()
+                .addData("status", new Func<String>() {
+                    @Override
+                    public String value() {
+                        return robot.imu.getSystemStatus().toShortString();
+                    }
+                })
+                .addData("calib", new Func<String>() {
+                    @Override
+                    public String value() {
+                        return robot.imu.getCalibrationStatus().toString();
+                    }
+                });
+        telemetry.addLine()
+                .addData("heading", new Func<String>() {
+                    @Override
+                    public String value() {
+                        return robot.formatAngle(robot.angles.angleUnit, robot.angles.firstAngle);
+                    }
+                })
+                .addData("roll", new Func<String>() {
+                    @Override
+                    public String value() {
+                        return robot.formatAngle(robot.angles.angleUnit, robot.angles.secondAngle);
+                    }
+                })
+                .addData("pitch", new Func<String>() {
+                    @Override
+                    public String value() {
+                        return robot.formatAngle(robot.angles.angleUnit, robot.angles.thirdAngle);
+                    }
+                });
+
+        telemetry.addLine()
+                .addData("grvty", new Func<String>() {
+                    @Override
+                    public String value() {
+                        return robot.gravity.toString();
+                    }
+                })
+                .addData("mag", new Func<String>() {
+                    @Override
+                    public String value() {
+                        return String.format(Locale.getDefault(), "%.3f",
+                                Math.sqrt(robot.gravity.xAccel * robot.gravity.xAccel
+                                        + robot.gravity.yAccel * robot.gravity.yAccel
+                                        + robot.gravity.zAccel * robot.gravity.zAccel));
+                    }
+                });
     }
 }
