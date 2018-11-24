@@ -60,8 +60,9 @@ public class RoverTeleopQualifier extends LinearOpMode{
 
             //Shoots blocks
           if (gamepad1.b){
-              robot.launcher.setPower(-1);
-              stopMotor.schedule(new RemindTask(),2,0);
+                robot.launcher.setPower(-1);
+              stopMotor = new Timer();
+              stopMotor.schedule(new RemindTask(),1,5000);
 
             }
 
@@ -113,6 +114,12 @@ public class RoverTeleopQualifier extends LinearOpMode{
 //            telemetry.addData("power", "  left=" + leftPower + "  right=" + rightPower);
             telemetry.addData("Arm power", robot.bop.getPower());
             telemetry.addData("Arm position", robot.bop.getCurrentPosition());
+//            telemetry.addData("Color Sensor RED", robot.cornerSensor.red());
+//            telemetry.addData("Color Sensor BLUE", robot.cornerSensor.blue());
+//            telemetry.addData("right power", robot.right1.getPower());
+//            telemetry.addData("right position", robot.right1.getCurrentPosition());
+//            telemetry.addData("left power", robot.left1.getPower());
+//            telemetry.addData("left position", robot.left1.getCurrentPosition());
             telemetry.update();
         }
     }

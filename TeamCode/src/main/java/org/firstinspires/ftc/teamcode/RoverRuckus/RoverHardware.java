@@ -48,6 +48,7 @@ public class RoverHardware {
     //Color Sensor 'Limit Switches'
     public ColorSensor bottomLimit;
     public ColorSensor upperLimit;
+    public ColorSensor cornerSensor;
 
     //Create Gyro
     BNO055IMU imu;
@@ -84,6 +85,7 @@ public class RoverHardware {
         //ColorSensors
         bottomLimit = HwMap.colorSensor.get("bottomLimit");
         upperLimit = HwMap.colorSensor.get("upperLimit");
+        cornerSensor = HwMap.colorSensor.get("cornerSensor");
 
         //Gyro
         imu = HwMap.get(BNO055IMU.class, "imu");
@@ -93,7 +95,7 @@ public class RoverHardware {
 
         //Set DcMotor Directions and Behaviors
         left1.setDirection(DcMotorSimple.Direction.FORWARD);
-        right1.setDirection(DcMotorSimple.Direction.REVERSE);
+        right1.setDirection(DcMotorSimple.Direction.REVERSE); //should be the other way
         hang.setDirection(DcMotorSimple.Direction.FORWARD);
         bop.setDirection(DcMotorSimple.Direction.FORWARD);
         launcher.setDirection(DcMotorSimple.Direction.FORWARD);
