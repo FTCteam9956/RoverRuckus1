@@ -134,6 +134,12 @@ public class CraterOneBlock extends LinearOpMode {
         robot.right1.setPower(0);
         sleep(500);
 
+        //Change the arm angle so it can hit the block
+        robot.rotateMech.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.rotateMech.setTargetPosition(180);
+        robot.rotateMech.setPower(0.1);
+        while(robot.rotateMech.isBusy()){}
+
 //        //Lower intake and extend arm out
         robot.bop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.bop.setTargetPosition(-1800);
@@ -145,7 +151,7 @@ public class CraterOneBlock extends LinearOpMode {
         //bring arm back in
 //        robot.bop.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.bop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.bop.setTargetPosition(500);
+        robot.bop.setTargetPosition(100);
         robot.bop.setPower(0.4);
         while(robot.bop.isBusy() && opModeIsActive() && opModeIsActive()){
             robot.drop.setPosition(robot.TOP_INTAKE);

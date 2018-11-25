@@ -112,14 +112,16 @@ public class RoverTeleopQualifier extends LinearOpMode{
 //            telemetry.addData("bottom blue", robot.bottomLimit.blue());
 //            telemetry.addData("stick", "  y=" + yValue + "  x=" + xValue);
 //            telemetry.addData("power", "  left=" + leftPower + "  right=" + rightPower);
-            telemetry.addData("Arm power", robot.bop.getPower());
-            telemetry.addData("Arm position", robot.bop.getCurrentPosition());
+//            telemetry.addData("Arm power", robot.bop.getPower());
+//            telemetry.addData("Arm position", robot.bop.getCurrentPosition());
 //            telemetry.addData("Color Sensor RED", robot.cornerSensor.red());
 //            telemetry.addData("Color Sensor BLUE", robot.cornerSensor.blue());
 //            telemetry.addData("right power", robot.right1.getPower());
 //            telemetry.addData("right position", robot.right1.getCurrentPosition());
 //            telemetry.addData("left power", robot.left1.getPower());
 //            telemetry.addData("left position", robot.left1.getCurrentPosition());
+            telemetry.addData("turret position", robot.rotateMech.getCurrentPosition());
+            telemetry.addData("Turret Power", robot.rotateMech.getPower());
             telemetry.update();
         }
     }
