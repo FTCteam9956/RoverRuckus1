@@ -80,8 +80,6 @@ public class CraterOneBlock extends LinearOpMode {
                 });
         waitForStart();
 
-
-
         //Raise arm
         while (robot.upperLimit.red() > 300 &&opModeIsActive()) {
             robot.hang.setPower(1);
@@ -151,7 +149,7 @@ public class CraterOneBlock extends LinearOpMode {
         //bring arm back in
 //        robot.bop.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.bop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.bop.setTargetPosition(100);
+        robot.bop.setTargetPosition(-50);
         robot.bop.setPower(0.4);
         while(robot.bop.isBusy() && opModeIsActive() && opModeIsActive()){
             robot.drop.setPosition(robot.TOP_INTAKE);
@@ -177,8 +175,8 @@ public class CraterOneBlock extends LinearOpMode {
         robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.left1.setTargetPosition(6700);
-        robot.right1.setTargetPosition(6700);
+        robot.left1.setTargetPosition(7300);
+        robot.right1.setTargetPosition(7300);
         robot.left1.setPower(0.4);
         robot.right1.setPower(0.4);
         while (robot.left1.isBusy() && opModeIsActive() || robot.right1.isBusy() && opModeIsActive()){}
@@ -214,9 +212,9 @@ public class CraterOneBlock extends LinearOpMode {
 //////        }
         robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.left1.setTargetPosition(-4400);
-        robot.right1.setTargetPosition(-4400);
-        robot.left1.setPower(-0.4 *  1.03);
+        robot.left1.setTargetPosition(-5000);
+        robot.right1.setTargetPosition(-5000);
+        robot.left1.setPower(-0.4 *  1.05);
         robot.right1.setPower(-0.4 );
         while(robot.left1.isBusy()){}
         robot.left1.setPower(0);
@@ -237,7 +235,7 @@ public class CraterOneBlock extends LinearOpMode {
         telemetry.update();
         robot.left1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.right1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        while (robot.angles.firstAngle > -40 && opModeIsActive() || (robot.angles.firstAngle < -55 && robot.angles.firstAngle < 0)&& opModeIsActive()) {
+        while (robot.angles.firstAngle > -35 && opModeIsActive() || (robot.angles.firstAngle < -45 && robot.angles.firstAngle < 0)&& opModeIsActive()) {
             robot.left1.setPower(-0.5);
             robot.right1.setPower(0.5);
             telemetry.update();
@@ -249,14 +247,23 @@ public class CraterOneBlock extends LinearOpMode {
 //            //Drop Icon thing
 //            //robot.drop.setPosition(0.2);
 //
-//            //Backup into crater
+//        //Backup into crater
         robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.left1.setTargetPosition(9000);
-        robot.right1.setTargetPosition(9000);
-        robot.left1.setPower(0.5);
+        robot.left1.setTargetPosition(3500);
+        robot.right1.setTargetPosition(3500);
+        robot.left1.setPower(0.5 * 1.05);
         robot.right1.setPower(0.5);
         while (robot.left1.isBusy() || robot.right1.isBusy()) {}
+
+        //Extend Arm out
+        //Lower intake and extend arm out
+        robot.bop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.bop.setTargetPosition(-2400);
+        robot.bop.setPower(-0.4);
+        while(robot.bop.isBusy() && opModeIsActive()){
+            robot.drop.setPosition(robot.TOP_INTAKE);
+        }
       }
 
     void composeTelemetry() {
