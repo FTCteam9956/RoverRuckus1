@@ -23,7 +23,7 @@ public class CraterOneBlock extends LinearOpMode {
 
     private GoldAlignDetector detector;
 
-    int angleTurn;
+    float angleTurn;
 
 
     public void runOpMode(){
@@ -126,17 +126,12 @@ public class CraterOneBlock extends LinearOpMode {
                 robot.right1.setPower(.4);
             }
 
-
-            if(opModeIsActive() == false){
-                break;
-            }
         }
         robot.left1.setPower(0);
         robot.right1.setPower(0);
         sleep(500);
 
         //Change the arm angle so it can hit the block
-        robot.rotateMech.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.rotateMech.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.rotateMech.setTargetPosition(180);
         robot.rotateMech.setPower(0.1);
@@ -161,23 +156,20 @@ public class CraterOneBlock extends LinearOpMode {
 
 //        //turn right
         robot.angles.firstAngle = angleTurn;
-        telemetry.addData("left1 power", robot.left1.getPower());
-        telemetry.addData("right1 power", robot.right1.getPower());
-        telemetry.addData("heading", robot.angles.firstAngle);
-        telemetry.addData("angle var:", angleTurn);
-        telemetry.update();
+
         robot.left1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.right1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         while (robot.angles.firstAngle > 70 && opModeIsActive() || robot.angles.firstAngle < 65 && opModeIsActive()) {
-            robot.angles.firstAngle = angleTurn;
+            angleTurn = robot.angles.firstAngle;
             //This is a right turn to 78 degrees
-                robot.left1.setPower(((68 - angleTurn / 68) * 0.2));
-                robot.right1.setPower(((68 - angleTurn / 68) * -0.2));
+                robot.left1.setPower(((68 - angleTurn) / 58) * 0.4);
+                robot.right1.setPower(((68 - angleTurn) / 58) * -0.4);
                 telemetry.addData("left1 power", robot.left1.getPower());
                 telemetry.addData("right1 power", robot.right1.getPower());
                 telemetry.addData("heading", robot.angles.firstAngle);
                 telemetry.addData("angle var:", angleTurn);
                 telemetry.update();
+
         }
 ////
         //Drive to the team marker area
@@ -185,8 +177,8 @@ public class CraterOneBlock extends LinearOpMode {
         robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.left1.setTargetPosition(7300);
-        robot.right1.setTargetPosition(7300);
+        robot.left1.setTargetPosition(7000);
+        robot.right1.setTargetPosition(7000);
         robot.left1.setPower(0.4);
         robot.right1.setPower(0.4);
         while (robot.left1.isBusy() && opModeIsActive() || robot.right1.isBusy() && opModeIsActive()){}
@@ -198,8 +190,8 @@ public class CraterOneBlock extends LinearOpMode {
         robot.left1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.right1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         while (robot.angles.firstAngle > -55 && opModeIsActive() || (robot.angles.firstAngle < -65 && robot.angles.firstAngle < 0)&& opModeIsActive()) {
-            robot.left1.setPower((Math.abs(60 - robot.angles.firstAngle / 60) * 0.5));
-            robot.right1.setPower((Math.abs(60 - robot.angles.firstAngle / 60) * -0.5));
+            robot.left1.setPower(((60 - robot.angles.firstAngle) / 60) * 0.5);
+            robot.right1.setPower(((60 - robot.angles.firstAngle) / 60) * -0.5);
             telemetry.update();
         }
         robot.left1.setPower(0);
@@ -245,10 +237,9 @@ public class CraterOneBlock extends LinearOpMode {
         telemetry.update();
         robot.left1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.right1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        while (robot.angles.firstAngle > 35 && opModeIsActive() || (robot.angles.firstAngle < 45 && robot.angles.firstAngle < 0)&& opModeIsActive()) {
+        while (robot.angles.firstAngle > -35 && opModeIsActive() || (robot.angles.firstAngle < -45 && robot.angles.firstAngle < 0)&& opModeIsActive()) {
             robot.left1.setPower(-0.5);
             robot.right1.setPower(0.5);
-            telemetry.addData("IMU:",robot.angles.firstAngle);
             telemetry.update();
         }
         robot.left1.setPower(0);
