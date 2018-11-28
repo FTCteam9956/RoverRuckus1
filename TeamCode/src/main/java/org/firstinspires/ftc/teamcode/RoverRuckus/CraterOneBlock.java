@@ -13,6 +13,7 @@ import org.firstinspires.ftc.robotcore.external.Func;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.opencv.core.Mat;
 
 import java.util.Locale;
 
@@ -24,9 +25,11 @@ public class CraterOneBlock extends LinearOpMode {
     private GoldAlignDetector detector;
 
     float angleTurn;
+    int blue;
+    int red;
 
 
-    public void runOpMode(){
+    public void runOpMode() {
         robot.init(hardwareMap);
 
         //Initialize OpenCV
@@ -84,7 +87,7 @@ public class CraterOneBlock extends LinearOpMode {
         waitForStart();
 
         //Raise arm
-        while (robot.upperLimit.red() > 300 &&opModeIsActive()) {
+        while (robot.upperLimit.red() > 300 && opModeIsActive()) {
             robot.hang.setPower(1);
         }
         robot.hang.setPower(0);
@@ -107,50 +110,89 @@ public class CraterOneBlock extends LinearOpMode {
             telemetry.addData("left position", robot.left1.getCurrentPosition());
             telemetry.update();
 
-            if(opModeIsActive() == false){
+            if (opModeIsActive() == false) {
                 break;
             }
         }
-        //Hunt for the Block
-        robot.left1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        robot.right1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        while(detector.getXPosition() < 235 && opModeIsActive() || detector.getXPosition() > 345 &&opModeIsActive()){
-            telemetry.addData("Status", "searching for angle");
-            telemetry.addData("xpos", detector.getXPosition());
-            telemetry.addData("IsAligned", detector.getAligned());
-            if (detector.getXPosition() < 235){
-                robot.left1.setPower(.4);
-                robot.right1.setPower(-.4);
-            } else if (detector.getXPosition() > 340){
-                robot.left1.setPower(-.4);
-                robot.right1.setPower(.4);
-            }
 
+        if (detector.getAligned() == true || detector.getAligned() == false) {
+            //Hunt for the Block
+            robot.left1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            robot.right1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            while (detector.getXPosition() < 235 && opModeIsActive() || detector.getXPosition() > 345 && opModeIsActive()) {
+                telemetry.addData("Status", "searching for angle");
+                telemetry.addData("xpos", detector.getXPosition());
+                telemetry.addData("IsAligned", detector.getAligned());
+                if (detector.getXPosition() < 235) {
+                    robot.left1.setPower(.4);
+                    robot.right1.setPower(-.4);
+                } else if (detector.getXPosition() > 340) {
+                    robot.left1.setPower(-.4);
+                    robot.right1.setPower(.4);
+                }
+            }
+        } else {
+            robot.angles.firstAngle = angleTurn;
+
+            robot.left1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            robot.right1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            while (robot.angles.firstAngle > 14 && opModeIsActive() || robot.angles.firstAngle < 19 && opModeIsActive()) {
+                angleTurn = robot.angles.firstAngle;
+                //This is a right turn to 78 degrees
+                robot.left1.setPower(Math.abs((17 - angleTurn) / 17) * 0.4);
+                robot.right1.setPower(Math.abs((17 - angleTurn) / 17) * -0.4);
+                telemetry.addData("left1 power", robot.left1.getPower());
+                telemetry.addData("right1 power", robot.right1.getPower());
+                telemetry.addData("heading", robot.angles.firstAngle);
+                telemetry.addData("angle var:", angleTurn);
+                telemetry.update();
+
+            }
         }
         robot.left1.setPower(0);
         robot.right1.setPower(0);
         sleep(500);
 
         //Change the arm angle so it can hit the block
+        //if (robot.angles.firstAngle > 2) {
         robot.rotateMech.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.rotateMech.setTargetPosition(180);
         robot.rotateMech.setPower(0.1);
-        while(robot.rotateMech.isBusy()){}
+        while (robot.rotateMech.isBusy()) {
+            //}
+        }
+//        else if (robot.angles.firstAngle < 2) {
+//            robot.rotateMech.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//            robot.rotateMech.setTargetPosition(-180);
+//            robot.rotateMech.setPower(-0.1);
+//            while (robot.rotateMech.isBusy()) {
+//            }
 
 //        //Lower intake and extend arm out
-        robot.bop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.bop.setTargetPosition(-1800);
-        robot.bop.setPower(-0.4);
-        while(robot.bop.isBusy() && opModeIsActive()) {
-            robot.drop.setPosition(robot.BOTTOM_INTAKE);
+        telemetry.addData("heading", robot.angles.firstAngle);
+        telemetry.update();
+        if(robot.angles.firstAngle < 5 && robot.angles.firstAngle > -5) {
+            robot.bop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.bop.setTargetPosition(-1450);
+            robot.bop.setPower(-0.4);
+            while (robot.bop.isBusy() && opModeIsActive()) {
+                robot.drop.setPosition(robot.BOTTOM_INTAKE);
+            }
+        } else{
+            robot.bop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.bop.setTargetPosition(-1800);
+            robot.bop.setPower(-0.4);
+            while (robot.bop.isBusy() && opModeIsActive()) {
+                robot.drop.setPosition(robot.BOTTOM_INTAKE);
+            }
         }
 
         //bring arm back in
 //        robot.bop.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.bop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.bop.setTargetPosition(-50);
+        robot.bop.setTargetPosition(300);
         robot.bop.setPower(0.4);
-        while(robot.bop.isBusy() && opModeIsActive() && opModeIsActive()){
+        while (robot.bop.isBusy() && opModeIsActive() && opModeIsActive()) {
             robot.drop.setPosition(robot.TOP_INTAKE);
         }
 
@@ -159,16 +201,16 @@ public class CraterOneBlock extends LinearOpMode {
 
         robot.left1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.right1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        while (robot.angles.firstAngle > 70 && opModeIsActive() || robot.angles.firstAngle < 65 && opModeIsActive()) {
+        while (robot.angles.firstAngle > 73 && opModeIsActive() || robot.angles.firstAngle < 68 && opModeIsActive()) {
             angleTurn = robot.angles.firstAngle;
             //This is a right turn to 78 degrees
-                robot.left1.setPower(((68 - angleTurn) / 58) * 0.4);
-                robot.right1.setPower(((68 - angleTurn) / 58) * -0.4);
-                telemetry.addData("left1 power", robot.left1.getPower());
-                telemetry.addData("right1 power", robot.right1.getPower());
-                telemetry.addData("heading", robot.angles.firstAngle);
-                telemetry.addData("angle var:", angleTurn);
-                telemetry.update();
+            robot.left1.setPower(((71 - angleTurn) / 71) * 0.4);
+            robot.right1.setPower(((71 - angleTurn) / 71) * -0.4);
+            telemetry.addData("left1 power", robot.left1.getPower());
+            telemetry.addData("right1 power", robot.right1.getPower());
+            telemetry.addData("heading", robot.angles.firstAngle);
+            telemetry.addData("angle var:", angleTurn);
+            telemetry.update();
 
         }
 ////
@@ -177,11 +219,12 @@ public class CraterOneBlock extends LinearOpMode {
         robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.left1.setTargetPosition(7000);
-        robot.right1.setTargetPosition(7000);
+        robot.left1.setTargetPosition(4800);
+        robot.right1.setTargetPosition(4800);
         robot.left1.setPower(0.4);
         robot.right1.setPower(0.4);
-        while (robot.left1.isBusy() && opModeIsActive() || robot.right1.isBusy() && opModeIsActive()){}
+        while (robot.left1.isBusy() && opModeIsActive() || robot.right1.isBusy() && opModeIsActive()) {
+        }
         robot.right1.setPower(0);
         robot.left1.setPower(0);
 //
@@ -189,15 +232,19 @@ public class CraterOneBlock extends LinearOpMode {
         telemetry.update();
         robot.left1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.right1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        while (robot.angles.firstAngle > -55 && opModeIsActive() || (robot.angles.firstAngle < -65 && robot.angles.firstAngle < 0)&& opModeIsActive()) {
-            robot.left1.setPower(((60 - robot.angles.firstAngle) / 60) * 0.5);
-            robot.right1.setPower(((60 - robot.angles.firstAngle) / 60) * -0.5);
+        while (robot.angles.firstAngle > - 59 && opModeIsActive() || (robot.angles.firstAngle < -70 && robot.angles.firstAngle < 0) && opModeIsActive()) {
+            robot.left1.setPower(Math.abs((-75 - robot.angles.firstAngle) / -58) * -0.4);
+            robot.right1.setPower(Math.abs((-75 - robot.angles.firstAngle) / -45) * 0.8);
+            telemetry.addData("left1 power", robot.left1.getPower());
+            telemetry.addData("right1 power", robot.right1.getPower());
+            telemetry.addData("heading", robot.angles.firstAngle);
+            telemetry.addData("angle var:", angleTurn);
             telemetry.update();
         }
         robot.left1.setPower(0);
         robot.right1.setPower(0);
 
-            //Drive forward and slightly into the wall
+        //Drive forward and slightly into the wall
         robot.left1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.right1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 //        robot.left1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -212,13 +259,35 @@ public class CraterOneBlock extends LinearOpMode {
 //////            telemetry.addData("Color Sensor BLUE", robot.cornerSensor.blue());
 //////            telemetry.update();
 //////        }
+
         robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.left1.setTargetPosition(-5000);
-        robot.right1.setTargetPosition(-5000);
-        robot.left1.setPower(-0.4 *  1.05);
-        robot.right1.setPower(-0.4 );
-        while(robot.left1.isBusy()){}
+        robot.left1.setTargetPosition(-6000);
+        robot.right1.setTargetPosition(-6000);
+        robot.left1.setPower(-0.4 * 1.1);
+        robot.right1.setPower(-0.4);
+        while (robot.left1.isBusy()) {}
+        robot.left1.setPower(-0.2);
+        robot.right1.setPower(-0.2);
+        robot.left1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        robot.right1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        telemetry.addData("Color Sensor RED", robot.cornerSensor.red());
+        telemetry.addData("Color Sensor BLUE", robot.cornerSensor.blue());
+        telemetry.update();
+
+        while((red <= 42 && opModeIsActive()) || (blue <= 27 &&opModeIsActive())){
+            red = robot.cornerSensor.red();
+            blue = robot.cornerSensor.blue();
+
+            robot.left1.setPower(-0.2 * 1.03);
+            robot.right1.setPower(-0.2);
+            telemetry.addData("Color Sensor RED", robot.cornerSensor.red());
+            telemetry.addData("Color Sensor BLUE", robot.cornerSensor.blue());
+            telemetry.addData("Alpha", robot.cornerSensor.alpha());
+            telemetry.addData(" RED", red);
+            telemetry.addData("BLUE", blue);
+            telemetry.update();
+        }
         robot.left1.setPower(0);
         robot.right1.setPower(0);
 
@@ -226,7 +295,7 @@ public class CraterOneBlock extends LinearOpMode {
         telemetry.update();
         robot.left1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.right1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        while (robot.angles.firstAngle > 5 && opModeIsActive() || (robot.angles.firstAngle < -5 && robot.angles.firstAngle < 0)&& opModeIsActive()) {
+        while (robot.angles.firstAngle > 5 && opModeIsActive() || (robot.angles.firstAngle < -5 && robot.angles.firstAngle < 0) && opModeIsActive()) {
             robot.left1.setPower(0.5);
             robot.right1.setPower(-0.5);
             telemetry.update();
@@ -237,9 +306,13 @@ public class CraterOneBlock extends LinearOpMode {
         telemetry.update();
         robot.left1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.right1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        while (robot.angles.firstAngle > -35 && opModeIsActive() || (robot.angles.firstAngle < -45 && robot.angles.firstAngle < 0)&& opModeIsActive()) {
-            robot.left1.setPower(-0.5);
-            robot.right1.setPower(0.5);
+        while (robot.angles.firstAngle > - 15 && opModeIsActive() || (robot.angles.firstAngle < -25 && robot.angles.firstAngle < 0) && opModeIsActive()) {
+            robot.left1.setPower(Math.abs((-18 - robot.angles.firstAngle) / -18) * -0.5);
+            robot.right1.setPower(Math.abs((-18 - robot.angles.firstAngle) / -15) * 0.5);
+            telemetry.addData("left1 power", robot.left1.getPower());
+            telemetry.addData("right1 power", robot.right1.getPower());
+            telemetry.addData("heading", robot.angles.firstAngle);
+            telemetry.addData("angle var:", angleTurn);
             telemetry.update();
         }
         robot.left1.setPower(0);
@@ -252,80 +325,81 @@ public class CraterOneBlock extends LinearOpMode {
 //        //Backup into crater
         robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.right1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.left1.setTargetPosition(3500);
-        robot.right1.setTargetPosition(3500);
+        robot.left1.setTargetPosition(1750);
+        robot.right1.setTargetPosition(1750);
         robot.left1.setPower(0.5 * 1.05);
         robot.right1.setPower(0.5);
-        while (robot.left1.isBusy() || robot.right1.isBusy()) {}
+        while (robot.left1.isBusy() || robot.right1.isBusy()) {
+        }
 
         //Extend Arm out
         //Lower intake and extend arm out
         robot.bop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.bop.setTargetPosition(-2400);
         robot.bop.setPower(-0.4);
-        while(robot.bop.isBusy() && opModeIsActive()){
+        while (robot.bop.isBusy() && opModeIsActive()) {
             robot.drop.setPosition(robot.TOP_INTAKE);
         }
-      }
+    }
 
-    void composeTelemetry() {
+        void composeTelemetry(){
 
 
-        telemetry.addAction(new Runnable() {
-            @Override
-            public void run() {
-                robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-                robot.gravity = robot.imu.getGravity();
-            }
-        });
-        telemetry.addLine()
-                .addData("status", new Func<String>() {
-                    @Override
-                    public String value() {
-                        return robot.imu.getSystemStatus().toShortString();
-                    }
-                })
-                .addData("calib", new Func<String>() {
-                    @Override
-                    public String value() {
-                        return robot.imu.getCalibrationStatus().toString();
-                    }
-                });
-        telemetry.addLine()
-                .addData("heading", new Func<String>() {
-                    @Override
-                    public String value() {
-                        return robot.formatAngle(robot.angles.angleUnit, robot.angles.firstAngle);
-                    }
-                })
-                .addData("roll", new Func<String>() {
-                    @Override
-                    public String value() {
-                        return robot.formatAngle(robot.angles.angleUnit, robot.angles.secondAngle);
-                    }
-                })
-                .addData("pitch", new Func<String>() {
-                    @Override
-                    public String value() {
-                        return robot.formatAngle(robot.angles.angleUnit, robot.angles.thirdAngle);
-                    }
-                });
+            telemetry.addAction(new Runnable() {
+                @Override
+                public void run() {
+                    robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+                    robot.gravity = robot.imu.getGravity();
+                }
+            });
+            telemetry.addLine()
+                    .addData("status", new Func<String>() {
+                        @Override
+                        public String value() {
+                            return robot.imu.getSystemStatus().toShortString();
+                        }
+                    })
+                    .addData("calib", new Func<String>() {
+                        @Override
+                        public String value() {
+                            return robot.imu.getCalibrationStatus().toString();
+                        }
+                    });
+            telemetry.addLine()
+                    .addData("heading", new Func<String>() {
+                        @Override
+                        public String value() {
+                            return robot.formatAngle(robot.angles.angleUnit, robot.angles.firstAngle);
+                        }
+                    })
+                    .addData("roll", new Func<String>() {
+                        @Override
+                        public String value() {
+                            return robot.formatAngle(robot.angles.angleUnit, robot.angles.secondAngle);
+                        }
+                    })
+                    .addData("pitch", new Func<String>() {
+                        @Override
+                        public String value() {
+                            return robot.formatAngle(robot.angles.angleUnit, robot.angles.thirdAngle);
+                        }
+                    });
 
-        telemetry.addLine()
-                .addData("grvty", new Func<String>() {
-                    @Override
-                    public String value() {
-                        return robot.gravity.toString();
-                    }
-                })
-                .addData("mag", new Func<String>() {
-                    @Override
-                    public String value() {
-                        return String.format(Locale.getDefault(), "%.3f",
-                                Math.sqrt(robot.gravity.xAccel * robot.gravity.xAccel
-                                        + robot.gravity.yAccel * robot.gravity.yAccel
-                                        + robot.gravity.zAccel * robot.gravity.zAccel));
-                    }
-                });
+            telemetry.addLine()
+                    .addData("grvty", new Func<String>() {
+                        @Override
+                        public String value() {
+                            return robot.gravity.toString();
+                        }
+                    })
+                    .addData("mag", new Func<String>() {
+                        @Override
+                        public String value() {
+                            return String.format(Locale.getDefault(), "%.3f",
+                                    Math.sqrt(robot.gravity.xAccel * robot.gravity.xAccel
+                                            + robot.gravity.yAccel * robot.gravity.yAccel
+                                            + robot.gravity.zAccel * robot.gravity.zAccel));
+                        }
+                    });
     }
 }

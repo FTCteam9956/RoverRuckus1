@@ -56,7 +56,7 @@ public class RoverHardware {
     Acceleration gravity;
 
     public final double BOTTOM_INTAKE = 1;
-    public final double TOP_INTAKE = 0.45;
+    public final double TOP_INTAKE = 0.1;
 
     public RoverHardware() {
         System.out.println("Created new RRHardwarePresets Object!");

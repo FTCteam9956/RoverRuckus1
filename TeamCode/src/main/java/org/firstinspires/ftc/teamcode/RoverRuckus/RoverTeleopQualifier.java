@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.RoverRuckus;
 
 import android.provider.CalendarContract;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -12,7 +14,10 @@ import java.util.Timer;
 import java.lang.Object;
 
 
-
+import org.firstinspires.ftc.robotcore.external.Func;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 import java.util.Locale;
@@ -32,6 +37,41 @@ public class RoverTeleopQualifier extends LinearOpMode{
     public void runOpMode(){
         robot.init(hardwareMap);
 
+
+        //Initialize Gyro
+        BNO055IMU.Parameters parameters1 = new BNO055IMU.Parameters();
+        parameters1.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+        parameters1.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters1.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
+        parameters1.loggingEnabled = true;
+        parameters1.loggingTag = "IMU";
+        parameters1.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
+
+        robot.imu = hardwareMap.get(BNO055IMU.class, "imu");
+        robot.imu.initialize(parameters1);
+
+        composeTelemetry();
+
+        telemetry.addLine()
+                .addData("heading", new Func<String>() {
+                    @Override
+                    public String value() {
+                        return robot.formatAngle(robot.angles.angleUnit, robot.angles.firstAngle);
+                    }
+                })
+                .addData("roll", new Func<String>() {
+                    @Override
+                    public String value() {
+                        return robot.formatAngle(robot.angles.angleUnit, robot.angles.secondAngle);
+                    }
+                })
+                .addData("pitch", new Func<String>() {
+                    @Override
+                    public String value() {
+                        return robot.formatAngle(robot.angles.angleUnit, robot.angles.thirdAngle);
+                    }
+                });
+        telemetry.update();
         waitForStart();
 
         while(opModeIsActive()){
@@ -114,14 +154,15 @@ public class RoverTeleopQualifier extends LinearOpMode{
 //            telemetry.addData("power", "  left=" + leftPower + "  right=" + rightPower);
 //            telemetry.addData("Arm power", robot.bop.getPower());
 //            telemetry.addData("Arm position", robot.bop.getCurrentPosition());
-//            telemetry.addData("Color Sensor RED", robot.cornerSensor.red());
-//            telemetry.addData("Color Sensor BLUE", robot.cornerSensor.blue());
+            telemetry.addData("Color Sensor RED", robot.cornerSensor.red());
+            telemetry.addData("Color Sensor BLUE", robot.cornerSensor.blue());
 //            telemetry.addData("right power", robot.right1.getPower());
 //            telemetry.addData("right position", robot.right1.getCurrentPosition());
 //            telemetry.addData("left power", robot.left1.getPower());
 //            telemetry.addData("left position", robot.left1.getCurrentPosition());
-            telemetry.addData("turret position", robot.rotateMech.getCurrentPosition());
-            telemetry.addData("Turret Power", robot.rotateMech.getPower());
+//            telemetry.addData("turret position", robot.rotateMech.getCurrentPosition());
+//            telemetry.addData("Turret Power", robot.rotateMech.getPower());
+            telemetry.addData("heading", robot.angles.firstAngle);
             telemetry.update();
         }
     }
@@ -130,5 +171,65 @@ public class RoverTeleopQualifier extends LinearOpMode{
             robot.launcher.setPower(0);
             stopMotor.cancel();
         }
+    }
+    void composeTelemetry() {
+
+
+        telemetry.addAction(new Runnable() {
+            @Override
+            public void run() {
+                robot.angles = robot.imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+                robot.gravity = robot.imu.getGravity();
+            }
+        });
+        telemetry.addLine()
+                .addData("status", new Func<String>() {
+                    @Override
+                    public String value() {
+                        return robot.imu.getSystemStatus().toShortString();
+                    }
+                })
+                .addData("calib", new Func<String>() {
+                    @Override
+                    public String value() {
+                        return robot.imu.getCalibrationStatus().toString();
+                    }
+                });
+        telemetry.addLine()
+                .addData("heading", new Func<String>() {
+                    @Override
+                    public String value() {
+                        return robot.formatAngle(robot.angles.angleUnit, robot.angles.firstAngle);
+                    }
+                })
+                .addData("roll", new Func<String>() {
+                    @Override
+                    public String value() {
+                        return robot.formatAngle(robot.angles.angleUnit, robot.angles.secondAngle);
+                    }
+                })
+                .addData("pitch", new Func<String>() {
+                    @Override
+                    public String value() {
+                        return robot.formatAngle(robot.angles.angleUnit, robot.angles.thirdAngle);
+                    }
+                });
+
+        telemetry.addLine()
+                .addData("grvty", new Func<String>() {
+                    @Override
+                    public String value() {
+                        return robot.gravity.toString();
+                    }
+                })
+                .addData("mag", new Func<String>() {
+                    @Override
+                    public String value() {
+                        return String.format(Locale.getDefault(), "%.3f",
+                                Math.sqrt(robot.gravity.xAccel * robot.gravity.xAccel
+                                        + robot.gravity.yAccel * robot.gravity.yAccel
+                                        + robot.gravity.zAccel * robot.gravity.zAccel));
+                    }
+                });
     }
 }
