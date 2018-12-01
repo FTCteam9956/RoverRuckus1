@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.RoverRuckus;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.hardware.AnalogInput;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -40,14 +41,17 @@ public class RoverHardware {
     public DcMotor hang;
     //bopper
     public DcMotor bop;
-    //dropper
-    public Servo drop;
-    //marker dropper
-    public Servo marker;
     //Rotation Mechanism
     public DcMotor rotateMech;
     // Ball Catcher???
     public DcMotor  ballCatch;
+    //dropper
+    public Servo drop;
+    //marker dropper
+    public Servo marker;
+    //Intake Servo
+    public CRServo intake;
+
 
 
     //Create Sensors
@@ -75,8 +79,6 @@ public class RoverHardware {
     RevBulkData bulkData;
     AnalogInput a0, a1, a2, a3;
     DigitalChannel d0, d1, d2, d3, d4, d5, d6, d7;
-
-
 
     public final double BOTTOM_INTAKE = 1;
     public final double TOP_INTAKE = 0.1;
@@ -115,6 +117,8 @@ public class RoverHardware {
         drop = HwMap.servo.get("drop");
         //marker dropper
         marker = HwMap.servo.get("marker");
+        //Intake servo
+        intake = HwMap.crservo.get("intake");
 
         //ColorSensors
         bottomLimit = HwMap.colorSensor.get("bottomLimit");
