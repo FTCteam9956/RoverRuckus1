@@ -35,6 +35,8 @@ public class RoverHardware {
     public DcMotor bop;
     //dropper
     public Servo drop;
+    //marker dropper
+    public Servo marker;
     //Rotation Mechanism
     public DcMotor rotateMech;
     // Ball Catcher???
@@ -81,6 +83,8 @@ public class RoverHardware {
         ballCatch = HwMap.dcMotor.get("ballCatch");
         //dropper
         drop = HwMap.servo.get("drop");
+        //marker dropper
+        marker = HwMap.servo.get("marker");
 
         //ColorSensors
         bottomLimit = HwMap.colorSensor.get("bottomLimit");

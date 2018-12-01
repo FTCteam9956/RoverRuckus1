@@ -323,8 +323,8 @@ public class CraterOneBlock extends LinearOpMode {
         robot.right1.setPower(0);
 //
 //
-//            //Drop Icon thing
-//            //robot.drop.setPosition(0.2);
+        //Drop Icon thing
+        robot.marker.setPosition(0.2);
 //
 //        //Backup into crater
         robot.left1.setMode(DcMotor.RunMode.RUN_TO_POSITION);
