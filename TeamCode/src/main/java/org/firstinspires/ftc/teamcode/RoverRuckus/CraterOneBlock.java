@@ -124,11 +124,11 @@ public class CraterOneBlock extends LinearOpMode {
                 telemetry.addData("xpos", detector.getXPosition());
                 telemetry.addData("IsAligned", detector.getAligned());
                 if (detector.getXPosition() < 235) {
-                    robot.left1.setPower(.5);
-                    robot.right1.setPower(-.5);
+                    robot.left1.setPower(.8);
+                    robot.right1.setPower(-.8);
                 } else if (detector.getXPosition() > 340) {
-                    robot.left1.setPower(-.5);
-                    robot.right1.setPower(.5);
+                    robot.left1.setPower(-.8);
+                    robot.right1.setPower(.8);
                 }
             }
         } else {
@@ -139,8 +139,8 @@ public class CraterOneBlock extends LinearOpMode {
             while (robot.angles.firstAngle > 14 && opModeIsActive() || robot.angles.firstAngle < 23 && opModeIsActive()) {
                 angleTurn = robot.angles.firstAngle;
                 //This is a right turn to 78 degrees
-                robot.left1.setPower(Math.abs((17 - angleTurn) / 17) * 0.5);
-                robot.right1.setPower(Math.abs((17 - angleTurn) / 17) * -0.5);
+                robot.left1.setPower(Math.abs((23 - angleTurn) / 17) * 0.5);
+                robot.right1.setPower(Math.abs((23 - angleTurn) / 17) * -0.5);
                 telemetry.addData("left1 power", robot.left1.getPower());
                 telemetry.addData("right1 power", robot.right1.getPower());
                 telemetry.addData("heading", robot.angles.firstAngle);
@@ -157,7 +157,7 @@ public class CraterOneBlock extends LinearOpMode {
         //if (robot.angles.firstAngle > 2) {
         robot.rotateMech.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.rotateMech.setTargetPosition(180);
-        robot.rotateMech.setPower(0.6);
+        robot.rotateMech.setPower(0.8);
         while (robot.rotateMech.isBusy()) {
             //}
         }
@@ -233,8 +233,8 @@ public class CraterOneBlock extends LinearOpMode {
         robot.left1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.right1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         while (robot.angles.firstAngle > - 59 && opModeIsActive() || (robot.angles.firstAngle < -70 && robot.angles.firstAngle < 0) && opModeIsActive()) {
-            robot.left1.setPower(Math.abs((-74 - robot.angles.firstAngle) / -58) * -0.4);
-            robot.right1.setPower(Math.abs((-74 - robot.angles.firstAngle) / -45) * 0.8);
+            robot.left1.setPower(Math.abs((-80 - robot.angles.firstAngle) / -58) * -0.4);
+            robot.right1.setPower(Math.abs((-80 - robot.angles.firstAngle) / -45) * 0.8);
             telemetry.addData("left1 power", robot.left1.getPower());
             telemetry.addData("right1 power", robot.right1.getPower());
             telemetry.addData("heading", robot.angles.firstAngle);
@@ -279,8 +279,8 @@ public class CraterOneBlock extends LinearOpMode {
             red = robot.cornerSensor.red();
             blue = robot.cornerSensor.blue();
 
-            robot.left1.setPower(-0.6 * 1.03);
-            robot.right1.setPower(-0.6);
+            robot.left1.setPower(-0.7* 1.03);
+            robot.right1.setPower(-0.7);
             telemetry.addData("Color Sensor RED", robot.cornerSensor.red());
             telemetry.addData("Color Sensor BLUE", robot.cornerSensor.blue());
             telemetry.addData("Alpha", robot.cornerSensor.alpha());
@@ -298,8 +298,8 @@ public class CraterOneBlock extends LinearOpMode {
         robot.left1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.right1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         while (robot.angles.firstAngle > 8 && opModeIsActive() || (robot.angles.firstAngle < -13 && robot.angles.firstAngle < 0) && opModeIsActive()) {
-            robot.left1.setPower(0.6);
-            robot.right1.setPower(-0.6);
+            robot.left1.setPower(0.8);
+            robot.right1.setPower(-0.8);
             telemetry.update();
         }
         robot.left1.setPower(0);
@@ -311,8 +311,8 @@ public class CraterOneBlock extends LinearOpMode {
         robot.left1.setPower(0);
         robot.right1.setPower(0);
         while (robot.angles.firstAngle > - 12 && opModeIsActive() || (robot.angles.firstAngle < -33 && robot.angles.firstAngle < 0) && opModeIsActive()) {
-            robot.left1.setPower(Math.abs((-28 - robot.angles.firstAngle) / -18) * -0.5);
-            robot.right1.setPower(Math.abs((-28 - robot.angles.firstAngle) / -15) * 0.5);
+            robot.left1.setPower(Math.abs((-32 - robot.angles.firstAngle) / -18) * -0.5);
+            robot.right1.setPower(Math.abs((-32 - robot.angles.firstAngle) / -15) * 0.5);
             telemetry.addData("left1 power", robot.left1.getPower());
             telemetry.addData("right1 power", robot.right1.getPower());
             telemetry.addData("heading", robot.angles.firstAngle);
