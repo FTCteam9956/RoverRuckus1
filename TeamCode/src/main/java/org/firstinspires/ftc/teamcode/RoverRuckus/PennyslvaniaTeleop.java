@@ -27,8 +27,8 @@ import org.openftc.revextensions2.RevExtensions2;
 
 import java.util.Locale;
 
-@TeleOp(name = "TeleOpTester", group = "Teleop")
-public class RoverTeleopQualifier extends LinearOpMode{
+@TeleOp(name = "Qualifier Teleop", group = "TeleOp")
+public class PennyslvaniaTeleop extends LinearOpMode {
 
     public RoverHardware robot = new RoverHardware();
 
@@ -91,7 +91,9 @@ public class RoverTeleopQualifier extends LinearOpMode{
 
         while(opModeIsActive()){
 
-            //Arcade Drive
+            //GAMEPAD 1
+
+            //Arcade Style Drive Motors
             yValue = gamepad1.left_stick_y;
             xValue = gamepad1.left_stick_x;
 
@@ -101,58 +103,66 @@ public class RoverTeleopQualifier extends LinearOpMode{
             robot.left1.setPower(Range.clip(leftPower, -1.0, 1.0));
             robot.right1.setPower(Range.clip(rightPower, -1.0, 1.0));
 
-            //Move block intake in and out
-            robot.bop.setPower(gamepad1.right_stick_y * 0.5);
+            //Tank Drive (if driver prefers it
+//            robot.left1.setPower(gamepad1.left_stick_y);
+//            robot.right1.setPower(gamepad1.right_stick_y);
+
+            //Arm that shoots blocks and balls
+            if(gamepad1.right_trigger > 0.5) {
+                robot.ballCatch.setPower(0.6);
+            } else if(gamepad1.left_trigger > 0.5){
+                robot.ballCatch.setPower(-0.6);
+            }
 
             //Hanging Mechanism
-          if (gamepad1.dpad_up && robot.upperLimit.red() > 300){
-              robot.hang.setPower(1);
-          } else if (gamepad1.dpad_down && robot.bottomLimit.red() < 100){
-             robot.hang.setPower(-1);
-          } else{
-              robot.hang.setPower(0);
-          }
-
-            //Shoots blocks
-          if (gamepad1.b){
-                robot.launcher.setPower(-1);
-              stopMotor = new Timer();
-              stopMotor.schedule(new RemindTask(),1,5000);
-
+            if (gamepad1.dpad_up && robot.upperLimit.red() > 300){
+                robot.hang.setPower(1);
+            } else if (gamepad1.dpad_down && robot.bottomLimit.red() < 100){
+                robot.hang.setPower(-1);
+            } else{
+                robot.hang.setPower(0);
             }
 
-            //Sets Servo Position to Top
-          if (gamepad1.y) {
+
+//            //Shoots blocks
+//            if (gamepad1.b){
+//                robot.launcher.setPower(-1);
+//                stopMotor = new Timer();
+//                stopMotor.schedule(new PennyslvaniaTeleop.RemindTask(),1,5000);
+//
+//            }
+
+            //GAMEPAD 2
+
+            //Sets Servo Position to Top or Bottom
+            if (gamepad2.y) {
                 robot.drop.setPosition(robot.TOP_INTAKE);
-          }
-
-            //Sets Servo Position to Bottom
-          if(gamepad1.a){
-              robot.drop.setPosition(robot.BOTTOM_INTAKE);
-          }
-
-          //Rotates the Bopper
-          if(gamepad1.right_trigger >= 0.5){
-              robot.rotateMech.setPower(-gamepad1.right_trigger * 0.5);
-          }
-          else if (gamepad1.left_trigger >= 0.5){
-              robot.rotateMech.setPower(gamepad1.left_trigger * 0.5);
-          }
-          else {
-              robot.rotateMech.setPower(0);
-          }
-
-          //Ball Catching Controls
-            if(gamepad1.right_bumper){
-              robot.ballCatch.setPower(0.75);
-            }
-            else if(gamepad1.left_bumper){
-              robot.ballCatch.setPower(-0.75);
-            }
-            else{
-              robot.ballCatch.setPower(0);
+            }else if(gamepad2.a){
+                robot.drop.setPosition(robot.BOTTOM_INTAKE);
             }
 
+            //Moves intake arm in and out
+            robot.bop.setPower(gamepad2.right_stick_y / 1.25);
+
+            //Rotates the Intake Arm
+            if(gamepad2.right_trigger >= 0.5){
+                robot.rotateMech.setPower(-gamepad1.right_trigger * 0.5);
+            }
+            else if (gamepad2.left_trigger >= 0.5){
+                robot.rotateMech.setPower(gamepad1.left_trigger * 0.5);
+            }
+            else {
+                robot.rotateMech.setPower(0);
+            }
+
+            //Move intake in or out
+            if(gamepad2.b){
+                robot.intake.setPower(0.6);
+            } else if(gamepad2.a){
+                robot.intake.setPower(-0.6);
+            } else{
+                robot.intake.setPower(0.0);
+            }
 
             bulkData = expansionHub.getBulkInputData();
 
@@ -189,7 +199,7 @@ public class RoverTeleopQualifier extends LinearOpMode{
             telemetry.update();
         }
     }
-    class RemindTask extends TimerTask{
+    class RemindTask extends TimerTask {
         public void run(){
             robot.launcher.setPower(0);
             stopMotor.cancel();
@@ -255,4 +265,5 @@ public class RoverTeleopQualifier extends LinearOpMode{
                     }
                 });
     }
+
 }
