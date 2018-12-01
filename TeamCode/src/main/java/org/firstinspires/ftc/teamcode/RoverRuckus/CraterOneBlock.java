@@ -21,18 +21,17 @@ import java.util.Locale;
 @Autonomous(name = "CraterOneBlock", group = "Autonomous")
 //@Disabled
 public class CraterOneBlock extends LinearOpMode {
-    public RoverHardware robot = new RoverHardware();
+    public RoverHardware robot = new RoverHardware(); //Initialize our Hardware referenced in our hardware class
 
-    private GoldAlignDetector detector;
+    private GoldAlignDetector detector; //Initialize detector used to search and find the golden block
 
-    float angleTurn;
-    int blue;
-    int red;
+    float angleTurn; //create a float variable used to store our current heading position while turning
+    int blue; //create a integer variable used to store the amount of blue being registered from a color sensor
+    int red; //create a integer variable used to store the amount of red being registered from a color sensor
 
-
-    public void runOpMode() {
-        robot.init(hardwareMap);
-        RevExtensions2.init();
+    public void runOpMode() {//Starts running the code
+        robot.init(hardwareMap); //register the hardware mappings from the hardware class with names given to motors servos, etc.
+        RevExtensions2.init(); //create name for our RevExpansion hub to look at things like voltage
 
         //Initialize OpenCV
         detector = new GoldAlignDetector();
