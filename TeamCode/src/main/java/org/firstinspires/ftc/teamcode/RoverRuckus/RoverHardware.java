@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.RoverRuckus;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -16,9 +17,10 @@ import java.util.Timer;
 import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-//import org.openftc.revextensions2.ExpansionHubEx;
-//import org.openftc.revextensions2.ExpansionHubMotor;
-//import org.openftc.revextensions2.RevExtensions2;
+import org.openftc.revextensions2.ExpansionHubEx;
+import org.openftc.revextensions2.ExpansionHubMotor;
+import org.openftc.revextensions2.RevBulkData;
+import org.openftc.revextensions2.RevExtensions2;
 
 import java.util.Locale;
 
@@ -63,12 +65,16 @@ public class RoverHardware {
     Acceleration gravity;
 
     //Exapnsion Hubs
-   // ExpansionHubEx expansionHub;
+    ExpansionHubEx expansionHub;
     //ExpansionHubEx expansionHub3;
 
     //Expansion Hub Motors
-    //expansionHubMotor left,right;
+//    ExpansionHubMotor left,right;
 
+
+    RevBulkData bulkData;
+    AnalogInput a0, a1, a2, a3;
+    DigitalChannel d0, d1, d2, d3, d4, d5, d6, d7;
 
 
 
@@ -89,8 +95,8 @@ public class RoverHardware {
 
 
         //Expansion Hub Motors
-        //left = (ExpansionHubMotor) HwMap.dcMotor.get("left1");
-        //right = (ExpansionHubMotor) HwMap.dcMotor.get("right1");
+//        left = (ExpansionHubMotor) HwMap.dcMotor.get("left1");
+//        right = (ExpansionHubMotor) HwMap.dcMotor.get("right1");
 
         //Drive Motors
         left1 = HwMap.dcMotor.get("left1");

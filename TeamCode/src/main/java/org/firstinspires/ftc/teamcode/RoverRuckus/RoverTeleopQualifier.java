@@ -19,6 +19,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+
+import org.openftc.revextensions2.ExpansionHubEx;
+import org.openftc.revextensions2.ExpansionHubMotor;
+import org.openftc.revextensions2.RevBulkData;
 import org.openftc.revextensions2.RevExtensions2;
 
 import java.util.Locale;
@@ -33,13 +37,21 @@ public class RoverTeleopQualifier extends LinearOpMode{
     public float xValue;
     public float yValue;
 
+
+    ExpansionHubEx expansionHub;
     Timer stopMotor;
+    ExpansionHubMotor left,right;
+    RevBulkData bulkData;
 
     public void runOpMode(){
         robot.init(hardwareMap);
 
-        //RevExtensions2.init();
+        RevExtensions2.init();
 
+
+        expansionHub = hardwareMap.get(ExpansionHubEx.class, "Expansion Hub 2");
+        left = (ExpansionHubMotor) hardwareMap.dcMotor.get("left1");
+        right = (ExpansionHubMotor) hardwareMap.dcMotor.get("right1");
 
         //Initialize Gyro
         BNO055IMU.Parameters parameters1 = new BNO055IMU.Parameters();
@@ -142,6 +154,8 @@ public class RoverTeleopQualifier extends LinearOpMode{
             }
 
 
+            bulkData = expansionHub.getBulkInputData();
+
             //Telemetry Section
 //            telemetry.addData("Distance (cm)", //Checks what the distance sensor on the launcher sees
 //            String.format(Locale.US, "%.02f", robot.senseOBJ.getDistance(DistanceUnit.CM)));
@@ -167,11 +181,11 @@ public class RoverTeleopQualifier extends LinearOpMode{
 //            telemetry.addData("Turret Power", robot.rotateMech.getPower());
             //telemetry.addData("heading", robot.angles.firstAngle);
 
-            //telemetry.addData("Total current", robot.expansionHub.getTotalModuleCurrentDraw());
-            //telemetry.addData("I2C current", robot.expansionHub.getI2cBusCurrentDraw());
-            //telemetry.addData("GPIO current", robot.expansionHub.getGpioBusCurrentDraw());
-            //telemetry.addData("M0 current", robot.left.getCurrentDraw());
-            //telemetry.addData("M1 current", robot.right.getCurrentDraw());
+            telemetry.addData("Total current", expansionHub.getTotalModuleCurrentDraw());
+            telemetry.addData("I2C current", expansionHub.getI2cBusCurrentDraw());
+            telemetry.addData("GPIO current", expansionHub.getGpioBusCurrentDraw());
+            telemetry.addData("Left current", left.getCurrentDraw());
+            telemetry.addData("Right current", right.getCurrentDraw());
             telemetry.update();
         }
     }
