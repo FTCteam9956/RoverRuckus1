@@ -19,6 +19,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.openftc.revextensions2.RevExtensions2;
 
 import java.util.Locale;
 
@@ -36,6 +37,8 @@ public class RoverTeleopQualifier extends LinearOpMode{
 
     public void runOpMode(){
         robot.init(hardwareMap);
+
+        //RevExtensions2.init();
 
 
         //Initialize Gyro
@@ -154,15 +157,21 @@ public class RoverTeleopQualifier extends LinearOpMode{
 //            telemetry.addData("power", "  left=" + leftPower + "  right=" + rightPower);
 //            telemetry.addData("Arm power", robot.bop.getPower());
 //            telemetry.addData("Arm position", robot.bop.getCurrentPosition());
-            telemetry.addData("Color Sensor RED", robot.cornerSensor.red());
-            telemetry.addData("Color Sensor BLUE", robot.cornerSensor.blue());
+            //telemetry.addData("Color Sensor RED", robot.cornerSensor.red());
+            //telemetry.addData("Color Sensor BLUE", robot.cornerSensor.blue());
 //            telemetry.addData("right power", robot.right1.getPower());
 //            telemetry.addData("right position", robot.right1.getCurrentPosition());
 //            telemetry.addData("left power", robot.left1.getPower());
 //            telemetry.addData("left position", robot.left1.getCurrentPosition());
 //            telemetry.addData("turret position", robot.rotateMech.getCurrentPosition());
 //            telemetry.addData("Turret Power", robot.rotateMech.getPower());
-            telemetry.addData("heading", robot.angles.firstAngle);
+            //telemetry.addData("heading", robot.angles.firstAngle);
+
+            //telemetry.addData("Total current", robot.expansionHub.getTotalModuleCurrentDraw());
+            //telemetry.addData("I2C current", robot.expansionHub.getI2cBusCurrentDraw());
+            //telemetry.addData("GPIO current", robot.expansionHub.getGpioBusCurrentDraw());
+            //telemetry.addData("M0 current", robot.left.getCurrentDraw());
+            //telemetry.addData("M1 current", robot.right.getCurrentDraw());
             telemetry.update();
         }
     }

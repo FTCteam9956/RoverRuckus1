@@ -16,10 +16,15 @@ import java.util.Timer;
 import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+//import org.openftc.revextensions2.ExpansionHubEx;
+//import org.openftc.revextensions2.ExpansionHubMotor;
+//import org.openftc.revextensions2.RevExtensions2;
 
 import java.util.Locale;
 
 public class RoverHardware {
+
+
 
     HardwareMap HwMap;
 
@@ -57,6 +62,16 @@ public class RoverHardware {
     Orientation angles;
     Acceleration gravity;
 
+    //Exapnsion Hubs
+   // ExpansionHubEx expansionHub;
+    //ExpansionHubEx expansionHub3;
+
+    //Expansion Hub Motors
+    //expansionHubMotor left,right;
+
+
+
+
     public final double BOTTOM_INTAKE = 1;
     public final double TOP_INTAKE = 0.1;
 
@@ -68,6 +83,15 @@ public class RoverHardware {
     public void init(HardwareMap hwm) {
 
         HwMap = hwm;
+        //Expansion Hubs
+        //expansionHub = HwMap.get(ExpansionHubEx.class, "Expansion Hub 2");
+        //expansionHub3 = HwMap.get(ExpansionHubEx.class, "Expansion Hub 3");
+
+
+        //Expansion Hub Motors
+        //left = (ExpansionHubMotor) HwMap.dcMotor.get("left1");
+        //right = (ExpansionHubMotor) HwMap.dcMotor.get("right1");
+
         //Drive Motors
         left1 = HwMap.dcMotor.get("left1");
         right1 = HwMap.dcMotor.get("right1");

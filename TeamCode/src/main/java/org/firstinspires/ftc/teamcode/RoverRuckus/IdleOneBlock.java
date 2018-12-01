@@ -13,6 +13,7 @@ import org.firstinspires.ftc.robotcore.external.Func;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.openftc.revextensions2.RevExtensions2;
 
 import java.util.Locale;
 
@@ -27,6 +28,8 @@ public class IdleOneBlock extends LinearOpMode {
     int red;
 
     public void runOpMode() {robot.init(hardwareMap);
+
+        RevExtensions2.init();
 
         //Initialize OpenCV
         detector = new GoldAlignDetector();

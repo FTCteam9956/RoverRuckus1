@@ -14,6 +14,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.opencv.core.Mat;
+import org.openftc.revextensions2.RevExtensions2;
 
 import java.util.Locale;
 
@@ -31,6 +32,7 @@ public class CraterOneBlock extends LinearOpMode {
 
     public void runOpMode() {
         robot.init(hardwareMap);
+        RevExtensions2.init();
 
         //Initialize OpenCV
         detector = new GoldAlignDetector();
