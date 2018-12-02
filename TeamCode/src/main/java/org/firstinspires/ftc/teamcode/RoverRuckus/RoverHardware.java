@@ -81,7 +81,7 @@ public class RoverHardware {
     DigitalChannel d0, d1, d2, d3, d4, d5, d6, d7;
 
     public final double BOTTOM_INTAKE = 1;
-    public final double TOP_INTAKE = 0.1;
+    public final double TOP_INTAKE = 0.3;
 
     public RoverHardware() {
         System.out.println("Created new RRHardwarePresets Object!");

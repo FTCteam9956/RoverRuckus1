@@ -36,10 +36,12 @@ public class RoverTeleopQualifier extends LinearOpMode{
     public float rightPower;
     public float xValue;
     public float yValue;
+    public int currentDiv = 1;
 
 
     ExpansionHubEx expansionHub;
     Timer stopMotor;
+    Timer currentReg;
     ExpansionHubMotor left,right;
     RevBulkData bulkData;
 
@@ -90,13 +92,24 @@ public class RoverTeleopQualifier extends LinearOpMode{
         waitForStart();
 
         while(opModeIsActive()){
+        if (xValue >= 0.2 || yValue >= 0.2 ) {
+            if (right.getCurrentDraw() >= 3500 || left.getCurrentDraw() >= 3500) {
+                currentReg = new Timer();
+                currentReg.schedule(new CurrentReg(), 0, 500);
+            } else {
+                currentDiv = 1;
+            }
+        }
+        else {
+            currentDiv = 1;
+        }
 
             //Arcade Drive
             yValue = gamepad1.left_stick_y;
             xValue = gamepad1.left_stick_x;
 
-            leftPower =  yValue - xValue;
-            rightPower = yValue + xValue;
+            leftPower =  (yValue - xValue) / currentDiv ;
+            rightPower = (yValue + xValue) / currentDiv;
 
             robot.left1.setPower(Range.clip(leftPower, -1.0, 1.0));
             robot.right1.setPower(Range.clip(rightPower, -1.0, 1.0));
@@ -112,6 +125,7 @@ public class RoverTeleopQualifier extends LinearOpMode{
           } else{
               robot.hang.setPower(0);
           }
+
 
             //Shoots blocks
           if (gamepad1.b){
@@ -186,6 +200,7 @@ public class RoverTeleopQualifier extends LinearOpMode{
             telemetry.addData("GPIO current", expansionHub.getGpioBusCurrentDraw());
             telemetry.addData("Left current", left.getCurrentDraw());
             telemetry.addData("Right current", right.getCurrentDraw());
+            telemetry.addData("Current Division", currentDiv);
             telemetry.update();
         }
     }
@@ -195,6 +210,12 @@ public class RoverTeleopQualifier extends LinearOpMode{
             stopMotor.cancel();
         }
     }
+
+    class CurrentReg extends TimerTask{
+        public void run(){
+            currentDiv = currentDiv + 1 ;
+        }
+}
     void composeTelemetry() {
 
 
