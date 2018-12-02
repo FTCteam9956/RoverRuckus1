@@ -18,7 +18,7 @@ import org.openftc.revextensions2.RevExtensions2;
 
 import java.util.Locale;
 
-@Autonomous(name = "CraterOneBlock", group = "Autonomous")
+@Autonomous(name = "BlueCraterOneBlock", group = "Autonomous")
 //@Disabled
 public class CraterOneBlock extends LinearOpMode {
     public RoverHardware robot = new RoverHardware(); //Initialize our Hardware referenced in our hardware class
@@ -272,20 +272,16 @@ public class CraterOneBlock extends LinearOpMode {
         robot.right1.setPower(-0.8);
         robot.left1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.right1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        telemetry.addData("Color Sensor RED", robot.cornerSensor.red());
         telemetry.addData("Color Sensor BLUE", robot.cornerSensor.blue());
         telemetry.update();
 
         while(robot.cornerSensor.blue() <= 45 &&opModeIsActive()){
-            red = robot.cornerSensor.red();
             blue = robot.cornerSensor.blue();
 
             robot.left1.setPower(-0.7* 1.03);
             robot.right1.setPower(-0.7);
-            telemetry.addData("Color Sensor RED", robot.cornerSensor.red());
             telemetry.addData("Color Sensor BLUE", robot.cornerSensor.blue());
             telemetry.addData("Alpha", robot.cornerSensor.alpha());
-            telemetry.addData(" RED", red);
             telemetry.addData("BLUE", blue);
             telemetry.addData("Searching", "");
             telemetry.update();

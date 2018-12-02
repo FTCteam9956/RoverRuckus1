@@ -95,7 +95,7 @@ public class RoverTeleopQualifier extends LinearOpMode{
         if (xValue >= 0.2 || yValue >= 0.2 ) {
             if (right.getCurrentDraw() >= 3500 || left.getCurrentDraw() >= 3500) {
                 currentReg = new Timer();
-                currentReg.schedule(new CurrentReg(), 0, 500);
+                currentReg.schedule(new CurrentReg(), 0, 250);
             } else {
                 currentDiv = 1;
             }
@@ -167,6 +167,11 @@ public class RoverTeleopQualifier extends LinearOpMode{
               robot.ballCatch.setPower(0);
             }
 
+            if(gamepad1.right_bumper){
+              robot.marker.setPosition(robot.DILBERT_DOWN);
+            } else if(gamepad1.left_bumper){
+              robot.marker.setPosition(robot.DILBERT_UP);
+            }
 
             bulkData = expansionHub.getBulkInputData();
 
@@ -213,7 +218,7 @@ public class RoverTeleopQualifier extends LinearOpMode{
 
     class CurrentReg extends TimerTask{
         public void run(){
-            currentDiv = currentDiv + 1 ;
+            currentDiv = currentDiv + 5 ;
         }
 }
     void composeTelemetry() {

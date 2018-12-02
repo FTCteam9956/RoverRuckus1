@@ -82,6 +82,8 @@ public class RoverHardware {
 
     public final double BOTTOM_INTAKE = 1;
     public final double TOP_INTAKE = 0.3;
+    public final double DILBERT_DOWN = 1.0;
+    public final double DILBERT_UP = 0.0;
 
     public RoverHardware() {
         System.out.println("Created new RRHardwarePresets Object!");

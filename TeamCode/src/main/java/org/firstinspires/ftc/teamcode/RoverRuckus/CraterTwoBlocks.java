@@ -17,7 +17,7 @@ import org.openftc.revextensions2.RevExtensions2;
 
 import java.util.Locale;
 
-@Autonomous (name = "CraterTwoBlock", group = "Autonomous")
+@Autonomous (name = "BlueCraterTwoBlock", group = "Autonomous")
 public class CraterTwoBlocks extends LinearOpMode {
     public RoverHardware robot = new RoverHardware();
 

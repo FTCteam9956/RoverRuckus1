@@ -5,6 +5,7 @@ import com.disnodeteam.dogecv.DogeCV;
 import com.disnodeteam.dogecv.detectors.roverrukus.GoldAlignDetector;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -16,13 +17,14 @@ import org.openftc.revextensions2.RevExtensions2;
 
 import java.util.Locale;
 
-public class IdleTwoBlocks extends LinearOpMode {
+@Autonomous(name = "RedDepotOneBlock", group = "Autonomous")
+public class RedIdleOneBlock extends LinearOpMode {
     public RoverHardware robot = new RoverHardware();
 
     private GoldAlignDetector detector;
 
     float angleTurn;
-    int blue;
+    int red;
 
     public void runOpMode() {robot.init(hardwareMap);
 
@@ -176,14 +178,18 @@ public class IdleTwoBlocks extends LinearOpMode {
             robot.bop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.bop.setTargetPosition(-1200);
             robot.bop.setPower(-0.4);
-            while (robot.bop.isBusy() && opModeIsActive()) {}
+            while (robot.bop.isBusy() && opModeIsActive()) {
+            }
+
         }
 
         //bring arm back in
         robot.bop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.bop.setTargetPosition(750);
         robot.bop.setPower(0.4);
-        while (robot.bop.isBusy() && opModeIsActive() && opModeIsActive()) {}
+        while (robot.bop.isBusy() && opModeIsActive() && opModeIsActive()) {
+
+        }
         robot.drop.setPosition(robot.TOP_INTAKE);
 
         //turn right
@@ -215,27 +221,7 @@ public class IdleTwoBlocks extends LinearOpMode {
         robot.right1.setPower(0);
         robot.left1.setPower(0);
 
-        //Turn Right to Other Blocks
-        while(!detector.getAligned() && robot.angles.firstAngle > -70) {
-            robot.left1.setPower(0.3);
-            robot.right1.setPower(-0.3);
-        }
-
-        //Hit Other Blocks
-        robot.bop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.bop.setTargetPosition(-1200);
-        robot.bop.setPower(-0.4);
-        while (robot.bop.isBusy() && opModeIsActive()) {}
-
-        //bring arm back in
-        robot.bop.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        robot.bop.setTargetPosition(750);
-        robot.bop.setPower(0.4);
-        while (robot.bop.isBusy() && opModeIsActive() && opModeIsActive()) {}
-        robot.drop.setPosition(robot.TOP_INTAKE);
-
-
-        //turn Left
+        //turn right
         telemetry.update();
         robot.left1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.right1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -262,17 +248,16 @@ public class IdleTwoBlocks extends LinearOpMode {
         robot.right1.setPower(-0.5);
         robot.left1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         robot.right1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        telemetry.addData("Color Sensor BLUE", robot.cornerSensor.blue());
+        telemetry.addData("Color Sensor RED", robot.cornerSensor.red());
         telemetry.update();
 
-        while(robot.cornerSensor.blue() <= 45 &&opModeIsActive()){
-            blue = robot.cornerSensor.blue();
+        while(robot.cornerSensor.red() <= 70 &&opModeIsActive()){
+            red = robot.cornerSensor.red();
 
             robot.left1.setPower(-0.3 * 1.03);
             robot.right1.setPower(-0.3);
-            telemetry.addData("Color Sensor BLUE", robot.cornerSensor.blue());
-            telemetry.addData("Alpha", robot.cornerSensor.alpha());
-            telemetry.addData("BLUE", blue);
+            telemetry.addData("Color Sensor RED", robot.cornerSensor.red());
+            telemetry.addData(" RED", red);
             telemetry.addData("Searching", "");
             telemetry.update();
         }
