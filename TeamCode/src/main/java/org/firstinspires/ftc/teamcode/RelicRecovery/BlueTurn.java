@@ -19,7 +19,7 @@ public class BlueTurn extends LinearOpMode{
 
     VuforiaLocalizer vuforia;
 
-    public final double DRIVE_LIMITER = 2;
+    public final double DRIVE_LIMITER = 245;
     public void runOpMode() {
         robot.init(hardwareMap); //Robot moves during init().
 
